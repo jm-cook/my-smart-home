@@ -86,7 +86,121 @@ Download [Custom theme](https://github.com/jm-cook/my-smart-home/blob/main/nest-
 
 ## Date card
 
+To achieve the date card like mine, you have to do a little bit of work. You will make use of the [time_date platform](https://www.home-assistant.io/integrations/time_date/). You can add this as an integration using the "Add integration" button. For the Date and Time cards in this dashboard you will need to add both the _date_ and _time_ sensors. Using these sensors we can create additional helpers.
+
+For the date card, create a new template helper with Device class "Date" in the helpers section of settings. The state template I used is:
+
+```jinja2
+{% set date = states('sensor.date') %}
+{% set datetime = strptime(date, '%Y-%m-%d') %}
+{% set weekday = datetime.strftime('%A') %}
+{% set month = datetime.strftime('%B') %}
+{% set day = datetime.strftime('%d') | int %}
+{%
+  set suffix = 'st' if (day % 10 == 1 and day != 11)
+  else 'nd' if (day % 10 == 2 and day != 12)
+  else 'rd' if (day % 10 == 3 and day != 13)
+  else 'th'
+%}
+{{ weekday }} {{ month }} {{ day }}{{ suffix }}
+```
+
+It seems easiest to do this in yaml as the helper dialog wouldnt accept a multiline template like the one above.
+
+You should add the following _yaml_ to your ```configuration.yaml```:
+
+```yaml
+template:
+  - sensor:
+      - name: current_date
+        icon: mdi:calendar-today
+        unique_id: current_date_formatted
+        state: >-
+          {% set date = states('sensor.date') %}
+          {% set datetime = strptime(date, '%Y-%m-%d') %}
+          {% set weekday = datetime.strftime('%A') %}
+          {% set month = datetime.strftime('%B') %}
+          {% set day = datetime.strftime('%d') | int %}
+          {%
+            set suffix = 'st' if (day % 10 == 1 and day != 11)
+            else 'nd' if (day % 10 == 2 and day != 12)
+            else 'rd' if (day % 10 == 3 and day != 13)
+            else 'th'
+          %}
+          {{ weekday }} {{ month }} {{ day }}{{ suffix }}
+```
+
+The Date card itself is simply a mushroom entity card. You can create it in the editor for mushroom cards, but here is the full yaml configuration for my card:
+
+```yaml
+          - type: custom:mushroom-entity-card
+            entity: sensor.current_date
+            layout: vertical
+            primary_info: none
+            icon_type: none
+            secondary_info: state
+            hold_action:
+              action: none
+            double_tap_action:
+              action: none
+            tap_action:
+              action: none
+            card_mod:
+              style:
+                mushroom-state-info$: |
+                  .container {
+                     --card-secondary-font-size: 2em;
+                     --card-secondary-line-height: 1.1em;
+                     --card-primary-font-size: 20px;
+                     align-items: center;
+                  }
+            view_layout:
+              grid-area: datearea
+```
+
+Here we have had to tweak the font sizes a little (it is the seconary_info field that we are using) in order to get a nice readable display, so I used card_mod for that. Note this overrides the already adjusted font size in the custom theme. This seems to be a size that fits for most situations.
+
 ## Time card
+
+The time card is similar, but simpler than the date card. You need to create a helper, I did mine in the main configuration file (obviously combine this with the date definition from the previous section):
+
+```yaml
+template:
+  - sensor:
+      - name: current_time
+        icon: mdi:clock
+        unique_id: current_time_formatted
+        state: >-
+          {{ now().strftime("%H:%M")}}
+```
+
+Yaml for the date card also overrides the font size:
+
+```yaml
+          - type: custom:mushroom-entity-card
+            entity: sensor.current_time
+            layout: vertical
+            primary_info: none
+            icon_type: none
+            secondary_info: state
+            hold_action:
+              action: none
+            double_tap_action:
+              action: none
+            tap_action:
+              action: none
+            card_mod:
+              style:
+                mushroom-state-info$: |
+                  .container {
+                     --card-secondary-font-size: 160px;
+                     --card-secondary-line-height: 160px;
+                     --card-primary-font-size: 10px;
+                     align-items: center;
+                  }
+            view_layout:
+              grid-area: timearea
+```
 
 ## Nowcast (weather) card
 
