@@ -215,7 +215,7 @@ template:
     action:
       - service: weather.get_forecasts
         target:
-          entity_id: weather.met_no_nowcast_fantoft
+          entity_id: weather.met_no_nowcast_myplace
         data:
           type: hourly
         response_variable: nowcast_5min
