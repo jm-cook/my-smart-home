@@ -81,7 +81,7 @@ In my tweaked theme I have changed the following to get the large font look that
 
 ```
 
-[Custom theme](https://github.com/jm-cook/my-smart-home/blob/main/nest-hub-dashboard/mush_nest_panel_theme.yaml)
+Download [Custom theme](https://github.com/jm-cook/my-smart-home/blob/main/nest-hub-dashboard/mush_nest_panel_theme.yaml)
 
 
 ## Date card
