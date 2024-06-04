@@ -162,23 +162,14 @@ Here we have had to tweak the font sizes a little (it is the seconary_info field
 
 ## Time card
 
-The time card is similar, but simpler than the date card. You need to create a helper, I did mine in the main configuration file (obviously combine this with the date definition from the previous section):
+The time card is simpler than the date card and can use the time sensor without further formatting. You need to create a helper, I did mine in the main configuration file (obviously combine this with the date definition from the previous section):
 
-```yaml
-template:
-  - sensor:
-      - name: current_time
-        icon: mdi:clock
-        unique_id: current_time_formatted
-        state: >-
-          {{ now().strftime("%H:%M")}}
-```
 
 Yaml for the time card also overrides the font size:
 
 ```yaml
           - type: custom:mushroom-entity-card
-            entity: sensor.current_time
+            entity: sensor.time
             layout: vertical
             primary_info: none
             icon_type: none
