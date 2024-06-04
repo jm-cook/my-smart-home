@@ -107,7 +107,7 @@ For the date card, create a new template helper with Device class "Date" in the 
 {{ weekday }} {{ month }} {{ day }}{{ suffix }}
 ```
 
-It seems easiest to do this in yaml as the helper dialog wouldnt accept a multiline template like the one above.
+It seems easiest to do this in yaml as the helper dialog wouldn't work with a multiline template like the one above.
 
 You should add the following _yaml_ to your ```configuration.yaml```:
 
@@ -377,4 +377,10 @@ chips:
 view_layout:
   grid-area: chips
 ```
+
+# Casting to the nest hub
+
+Casting to the nest hub is not covered in detail here, you should search for the blueprint solution elsewhere. If you just want to try out
+casting your own dashboard to a nest hub, navigate to your cast device *Settings->Integrations->Google cast*. Then look for your device in the devices list.
+From there you can navigate to "browse media", and find your dashboard. Then click the "play" button.
 
