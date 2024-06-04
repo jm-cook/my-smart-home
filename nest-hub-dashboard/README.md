@@ -329,6 +329,8 @@ The detault tap action is used, so if you click on a sensor, it will show a grap
 
 ![image](https://github.com/jm-cook/my-smart-home/assets/8317651/86ad13ef-e849-4ba9-87af-7957e3daac97)
 
+![image](https://github.com/jm-cook/my-smart-home/assets/8317651/c52ff214-547e-43cc-9200-1cb31ed06d85)
+
 
 Our home has installed a balanced air system for air circulation. This keeps the air fresh and is energy efficient. The system can be accessed using the 
 [Flexit Nordic](https://www.home-assistant.io/integrations/flexit_bacnet/) integration. This is an integration for newer models where netwerk 
