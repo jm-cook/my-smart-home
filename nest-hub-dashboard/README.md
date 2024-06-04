@@ -365,7 +365,7 @@ view_layout:
 
 
 The remaining grid area can be used for an additional sensor, or as I have chosen, to add further information in the form of 
-mushroom _chips_. So far I have added a weather chip, and clicking on this will show the forcast for the next hours/days.
+mushroom _chips_. So far I have added a weather chip, and clicking on this will show the forecast for the next hours/days.
 
 ```yaml
 type: custom:mushroom-chips-card
