@@ -1,0 +1,190 @@
+views:
+  - type: custom:grid-layout
+    path: nest-dashboard
+    theme: mush_nest_panel
+    title: Nest
+    cards:
+      - type: custom:layout-card
+        layout_type: custom:grid-layout
+        layout:
+          grid-template-columns: repeat(4, 1fr)
+          grid-template-rows: auto auto auto auto
+          grid-template-areas: >
+            "datearea  datearea   weather  weather" "timearea  timearea  
+            weather  weather"  "button1   button2    button3  fan" "button4  
+            button5    button6  chips "
+        cards:
+          - type: custom:mushroom-entity-card
+            entity: sensor.indoor_temperature
+            name: Livingroom
+            layout: vertical
+            view_layout:
+              grid-area: button1
+          - type: custom:mushroom-entity-card
+            entity: sensor.outdoor_temperature
+            name: Outdoor
+            layout: vertical
+            view_layout:
+              grid-area: button2
+          - type: custom:mushroom-entity-card
+            entity: sensor.outdoor_humidity
+            name: Outdoor Humidity
+            layout: vertical
+            view_layout:
+              grid-area: button3
+          - type: custom:mushroom-entity-card
+            name: Bedroom
+            layout: vertical
+            entity: sensor.bedroom_temperature
+            view_layout:
+              grid-area: button4
+          - type: custom:mushroom-entity-card
+            entity: sensor.indoor_co2
+            name: Carbon Dioxide
+            layout: vertical
+            view_layout:
+              grid-area: button5
+          - type: custom:mushroom-entity-card
+            entity: sensor.indoor_humidity
+            name: Indoor Humidity
+            layout: vertical
+            view_layout:
+              grid-area: button6
+          - type: custom:mushroom-entity-card
+            entity: sensor.current_time
+            layout: vertical
+            primary_info: none
+            icon_type: none
+            secondary_info: state
+            hold_action:
+              action: none
+            double_tap_action:
+              action: none
+            tap_action:
+              action: none
+            card_mod:
+              style:
+                mushroom-state-info$: |
+                  .container {
+                     --card-secondary-font-size: 160px;
+                     --card-secondary-line-height: 160px;
+                     --card-primary-font-size: 10px;
+                     align-items: center;
+                  }
+            view_layout:
+              grid-area: timearea
+          - type: custom:mushroom-entity-card
+            entity: sensor.current_date
+            layout: vertical
+            primary_info: none
+            icon_type: none
+            secondary_info: state
+            hold_action:
+              action: none
+            double_tap_action:
+              action: none
+            tap_action:
+              action: none
+            card_mod:
+              style:
+                mushroom-state-info$: |
+                  .container {
+                     --card-secondary-font-size: 2em;
+                     --card-secondary-line-height: 1.1em;
+                     --card-primary-font-size: 20px;
+                     align-items: center;
+                  }
+            view_layout:
+              grid-area: datearea
+          - type: custom:chartjs-card
+            chart: line
+            data:
+              datasets:
+                - backgroundColor: rgb(65,105,225)
+                  borderWidth: 10
+                  fill: true
+                  cubicInterpolationMode: monotone
+                  data: >-
+                    ${states['sensor.nowcast'].attributes.forecast.map(fcast =>
+                    ({x: (new Date(fcast.datetime).getTime()-new
+                    Date().getTime()), y: parseFloat(fcast.precipitation)}))}
+              blabels: ${30}
+              labels: >-
+                ${states['sensor.nowcast'].attributes.forecast.map(fcast =>
+                5*Math.floor((new Date(fcast.datetime).getTime()-new
+                Date().getTime())/(5000*60)))}
+            entity_row: true
+            custom_options:
+              showLegend: false
+            options:
+              elements:
+                point:
+                  radius: 0
+              scales:
+                x:
+                  max: 90
+                  min: 0
+                  display: true
+                  color: red
+                  ticks:
+                    callback: >-
+                      ${(function (val, index) {   var lval =
+                      parseInt(this.getLabelForValue(val));  if (lval == 0) {
+                      return 'Now';} else { return  lval % 30 === 0?lval:'';}  
+                      })}
+                    font:
+                      size: 18
+                'y':
+                  beginAtZero: true
+                  display: true
+                  position: right
+                  grid:
+                    color: >-
+                      ${(function(context) {return context.tick.value%1
+                      ===0?'#aaaaaa':'#000000';})}
+                  ticks:
+                    callback: >-
+                      ${(function(val, index) { var lval =
+                      this.getLabelForValue(val); var ival = Math.round(lval);
+                      return lval % 1 === 0 ? ival : '';})}
+                    font:
+                      size: 18
+                  max: 3
+              plugins:
+                title:
+                  display: true
+                  font:
+                    size: 18
+                  text: ${states['sensor.nowcast'].state;}
+            view_layout:
+              grid-area: weather
+          - type: custom:mushroom-template-card
+            primary: Ventilation - {{states('input_number.fan_temperature')}} °C
+            secondary: >
+              {{ state_attr('climate.flexit_nordic', 'preset_mode'
+              ).capitalize() }}
+            icon: mdi:fan
+            icon_color: >-
+              {% if (state_attr('climate.flexit_nordic', 'preset_mode' )  ==
+              'home') -%} 
+                var(--rgb-state-climate-heat-cool)
+              {%- elif (state_attr('climate.flexit_nordic', 'preset_mode' ) ==
+              'boost') -%} 
+                var(--rgb-state-climate-heat)
+              {%- else -%}
+                var(--rgb-state-climate-idle)
+              {%- endif %}
+            view_layout:
+              grid-area: fan
+            layout: vertical
+            entity: climate.flexit_nordic
+            tap_action:
+              action: more-info
+          - type: custom:mushroom-chips-card
+            chips:
+              - type: weather
+                entity: weather.forecast_home
+                show_conditions: true
+                show_temperature: true
+            view_layout:
+              grid-area: chips
