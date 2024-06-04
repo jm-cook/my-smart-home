@@ -17,6 +17,7 @@ To make a dashboard like mine you will need to install:
 
  - [Mushroom](https://github.com/piitaya/lovelace-mushroom)
  - [Lovelace-layout-card](https://github.com/thomasloven/lovelace-layout-card)
+ - [card-mod](https://github.com/thomasloven/lovelace-card-mod)
 
 Follow the instructions for installing each package on your own installation.
 
