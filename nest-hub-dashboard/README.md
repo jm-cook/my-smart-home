@@ -174,7 +174,7 @@ template:
           {{ now().strftime("%H:%M")}}
 ```
 
-Yaml for the date card also overrides the font size:
+Yaml for the time card also overrides the font size:
 
 ```yaml
           - type: custom:mushroom-entity-card
