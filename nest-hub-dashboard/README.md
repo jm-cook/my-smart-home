@@ -384,7 +384,7 @@ view_layout:
 
 # Casting to the nest hub
 
-Casting to the nest hub is not covered in detail here, you should search for the blueprint solution elsewhere. If you just want to try out
+Casting to the nest hub is not covered in detail here, you should search for the blueprint solution elsewhere for a persistent solution. If you just want to try out
 casting your own dashboard to a nest hub, navigate to your cast device *Settings->Integrations->Google cast*. Then look for your device in the devices list.
 From there you can navigate to "browse media", and find your dashboard. Then click the "play" button.
 
