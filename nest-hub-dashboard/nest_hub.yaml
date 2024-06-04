@@ -9,10 +9,11 @@ views:
         layout:
           grid-template-columns: repeat(4, 1fr)
           grid-template-rows: auto auto auto auto
-          grid-template-areas: >
-            "datearea  datearea   weather  weather" "timearea  timearea  
-            weather  weather"  "button1   button2    button3  fan" "button4  
-            button5    button6  chips "
+          grid-template-areas: |
+            "datearea  datearea   weather  weather" 
+            "timearea  timearea   weather  weather"  
+            "button1   button2    button3  fan" 
+            "button4   button5    button6  chips "
         cards:
           - type: custom:mushroom-entity-card
             entity: sensor.indoor_temperature
@@ -51,7 +52,6 @@ views:
             view_layout:
               grid-area: button6
           - type: custom:mushroom-entity-card
-            entity: sensor.current_time
             layout: vertical
             primary_info: none
             icon_type: none
@@ -62,6 +62,7 @@ views:
               action: none
             tap_action:
               action: none
+            entity: sensor.time
             card_mod:
               style:
                 mushroom-state-info$: |
@@ -159,7 +160,9 @@ views:
             view_layout:
               grid-area: weather
           - type: custom:mushroom-template-card
-            primary: Ventilation - {{states('input_number.fan_temperature')}} °C
+            primary: >-
+              Ventilation - {{ state_attr('climate.flexit_nordic',
+              'temperature') }} °C
             secondary: >
               {{ state_attr('climate.flexit_nordic', 'preset_mode'
               ).capitalize() }}
@@ -174,12 +177,12 @@ views:
               {%- else -%}
                 var(--rgb-state-climate-idle)
               {%- endif %}
-            view_layout:
-              grid-area: fan
             layout: vertical
             entity: climate.flexit_nordic
             tap_action:
               action: more-info
+            view_layout:
+              grid-area: fan
           - type: custom:mushroom-chips-card
             chips:
               - type: weather
