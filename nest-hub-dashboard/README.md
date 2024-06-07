@@ -50,10 +50,9 @@ views:
         layout_type: custom:grid-layout
         layout:
           grid-template-columns: repeat(4, 1fr)
-          grid-template-rows: auto auto auto auto
+          grid-template-rows: auto auto  auto
           grid-template-areas: |
-            "datearea  datearea   weather  weather" 
-            "timearea  timearea   weather  weather"  
+            "timedate  timedate   weather  weather"   
             "button1   button2    button3  fan" 
             "button4   button5    button6  chips "
 ```
@@ -76,7 +75,7 @@ In my tweaked theme I have changed the following to get the large font look that
     mush-card-primary-font-size: 22px
     mush-card-secondary-font-size: 50px
     mush-card-primary-font-weight: 500
-    mush-card-secondary-font-weight: 600
+    mush-card-secondary-font-weight: 550
     mush-card-primary-line-height: 25px
     mush-card-secondary-line-height: 52px
     mush-card-primary-color: grey
@@ -84,15 +83,18 @@ In my tweaked theme I have changed the following to get the large font look that
     mush-card-border-radius: 18px
 
 ```
+Some of the style elements for chips are also tweaked for readability on a room display.
 
-Download [Custom theme](https://github.com/jm-cook/my-smart-home/blob/main/nest-hub-dashboard/mush_nest_panel_theme.yaml)
+Download [Custom theme](https://github.com/jm-cook/my-smart-home/blob/main/nest-hub-dashboard/mush_nest_panel_theme.yaml) for the full list of customizations.
 
 
-## Date card
+## Date and time card
 
 To achieve the date card like mine, you have to do a little bit of work. You will make use of the [time_date platform](https://www.home-assistant.io/integrations/time_date/). You can add this as an integration using the "Add integration" button. For the Date and Time cards in this dashboard you will need to add both the _date_ and _time_ sensors. Using these sensors we can create additional helpers.
 
-For the date card, create a new template helper with Device class "Date" in the helpers section of settings. The state template I used is:
+![image](https://github.com/jm-cook/my-smart-home/assets/8317651/f040fe76-3e36-429e-af45-cceefc07382e)
+
+For the date and time card, create a new template helper with Device class "Date" in the helpers section of settings. The state template I used is:
 
 ```jinja2
 {% set date = states('sensor.date') %}
@@ -134,68 +136,39 @@ template:
           {{ weekday }} {{ month }} {{ day }}{{ suffix }}
 ```
 
-The Date card itself is simply a mushroom entity card. You can create it in the editor for mushroom cards, but here is the full yaml configuration for my card:
+The Date card with time display is a mushroom template card dosplaying both the time and the date. You can create it in the editor for mushroom cards, but here is the full yaml configuration for my card:
 
 ```yaml
-          - type: custom:mushroom-entity-card
-            entity: sensor.current_date
-            layout: vertical
-            primary_info: none
-            icon_type: none
-            secondary_info: state
+          - type: custom:mushroom-template-card
+            primary: '{{states(''sensor.current_date'')}}'
+            secondary: '{{states(''sensor.time'')}}'
+            icon: ''
+            tap_action:
+              action: none
             hold_action:
               action: none
             double_tap_action:
               action: none
-            tap_action:
-              action: none
-            card_mod:
-              style:
-                mushroom-state-info$: |
-                  .container {
-                     --card-secondary-font-size: 2em;
-                     --card-secondary-line-height: 1.1em;
-                     --card-primary-font-size: 20px;
-                     align-items: center;
-                  }
-            view_layout:
-              grid-area: datearea
-```
-
-Here we have had to tweak the font sizes a little (it is the seconary_info field that we are using) in order to get a nice readable display, so I used card_mod for that. Note this overrides the already adjusted font size in the custom theme. This seems to be a size that fits for most situations.
-
-## Time card
-
-The time card is simpler than the date card and can use the time sensor without further formatting. You need to create a helper, I did mine in the main configuration file (obviously combine this with the date definition from the previous section):
-
-
-Yaml for the time card also overrides the font size:
-
-```yaml
-          - type: custom:mushroom-entity-card
             entity: sensor.time
-            layout: vertical
-            primary_info: none
-            icon_type: none
-            secondary_info: state
-            hold_action:
-              action: none
-            double_tap_action:
-              action: none
-            tap_action:
-              action: none
+            fill_container: true
             card_mod:
               style:
-                mushroom-state-info$: |
-                  .container {
-                     --card-secondary-font-size: 160px;
-                     --card-secondary-line-height: 160px;
-                     --card-primary-font-size: 10px;
-                     align-items: center;
-                  }
+                mushroom-card:
+                  mushroom-state-item:
+                    mushroom-state-info $: |
+                      .container {
+                         --card-secondary-font-size: 160px;
+                         --card-secondary-line-height: 175px;
+                         --card-primary-line-height: 40px;
+                         --card-primary-font-size: 30px;
+                         align-items: center;
+                      }
             view_layout:
-              grid-area: timearea
+              grid-area: timedate
 ```
+
+Here we have had to tweak the font sizes a little in order to get a nice readable display, so I used card_mod for that. Note this overrides the already adjusted font size in the custom theme. This seems to be a size that fits for most situations.
+
 
 ## Nowcast (weather) card
 
