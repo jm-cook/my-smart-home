@@ -14,6 +14,7 @@ I was able to remove approximately 350 lines of tricky template configuration co
 where my button-cards were used and I am quite happy with the result.
 
 The dashboard uses primarily mushroom cards and the custom grid-layout from lovelace-layout-card (https://github.com/thomasloven/lovelace-layout-card).
+I made some minor custom adjustments using ```card_mod```, but was able to keep these to a minimum.
 
 # Pre-requisite
 
