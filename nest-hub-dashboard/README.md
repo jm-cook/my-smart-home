@@ -44,7 +44,7 @@ The ```layout```specifies 4 columns each taking a quarter of the width. We use 4
 
 ```yaml
 views:
-  - type: custom:grid-layout
+  - type: panel
     path: nest-dashboard
     theme: mush_nest_panel
     title: Nest
