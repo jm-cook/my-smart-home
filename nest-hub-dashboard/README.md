@@ -139,7 +139,7 @@ template:
           {{ weekday }} {{ month }} {{ day }}{{ suffix }}
 ```
 
-The Date card with time display is a mushroom template card dosplaying both the time and the date. You can create it in the editor for mushroom cards, but here is the full yaml configuration for my card:
+The Date card with time display is a mushroom template card displaying both the time and the date. You can create it in the editor for mushroom cards, but here is the full yaml configuration for my card:
 
 ```yaml
           - type: custom:mushroom-template-card
