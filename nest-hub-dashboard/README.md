@@ -4,8 +4,9 @@ This document describes how I created a smart home dashboard that can be shown o
 The first image is a photo of the hub as it looks in the kitchen, the second is a screenshot of the dashboard from a web browser.
 
 
-<img src="20240604_075825-1717483432984.jpg" width="400">
-<img src="https://github.com/jm-cook/my-smart-home/assets/8317651/7885a565-9a99-4bab-acd6-bff6c9f7fb09" width="400">
+<img src="https://github.com/jm-cook/my-smart-home/assets/8317651/efff7d99-0841-4fe9-87d8-17d49f783199" width="400">
+
+<img src="https://github.com/jm-cook/my-smart-home/assets/8317651/6473d673-c0b1-4cdb-949d-c175d0c3828c" width="400">
 
 
 Previously I have used the custom button-card for lovelace (https://github.com/custom-cards/button-card), but recently I experimented with the custom mushroom cards (https://github.com/piitaya/lovelace-mushroom) and liked the simple approach, requiring very little customization to achieve the look that I was after. 
