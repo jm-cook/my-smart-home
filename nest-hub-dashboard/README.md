@@ -65,7 +65,7 @@ views:
 Mushroom cards allow for some degree of customization using a custom theme. To achieve what I wanted I have tweaked a copy of the baseline theme to 
 have larger fonts. The larger fonts will not work in all situations, and are designed to be used with my bespoke layout.
 
-You can obtaine a copy of the baseline [mushroom theme at this location](https://github.com/piitaya/lovelace-mushroom-themes). Follow the instructions 
+You can obtain a copy of the baseline [mushroom theme at this location](https://github.com/piitaya/lovelace-mushroom-themes). Follow the instructions 
 to install this or modify them to fit your own needs. It is important to give the theme a name that is unique so if you create more than one mushroom 
 theme, be sure to give them different names.
 
