@@ -311,7 +311,7 @@ The detault tap action is used, so if you click on a sensor, it will show a grap
 
 
 Our home has installed a balanced air system for air circulation. This keeps the air fresh and is energy efficient. The system can be accessed using the 
-[Flexit Nordic](https://www.home-assistant.io/integrations/flexit_bacnet/) integration. This is an integration for newer models where netwerk 
+[Flexit Nordic](https://www.home-assistant.io/integrations/flexit_bacnet/) integration. This is an integration for newer models where network 
 access is built in to the device. The integration provides a climate device with sensors and controls.
 
 The Mushroom climate card was not really suitable for what I wanted for my display so I used the Mushroom template card to achieve a 
