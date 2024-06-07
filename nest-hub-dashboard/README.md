@@ -5,7 +5,7 @@ The first image is a photo of the hub as it looks in the kitchen, the second is 
 
 
 <img src="https://github.com/jm-cook/my-smart-home/assets/8317651/efff7d99-0841-4fe9-87d8-17d49f783199" width="400">
-
+</br>
 <img src="https://github.com/jm-cook/my-smart-home/assets/8317651/6473d673-c0b1-4cdb-949d-c175d0c3828c" width="400">
 
 
