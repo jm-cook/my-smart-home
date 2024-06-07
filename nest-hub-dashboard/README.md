@@ -92,7 +92,7 @@ Download [Custom theme](https://github.com/jm-cook/my-smart-home/blob/main/nest-
 
 To achieve the date card like mine, you have to do a little bit of work. You will make use of the [time_date platform](https://www.home-assistant.io/integrations/time_date/). You can add this as an integration using the "Add integration" button. For the Date and Time cards in this dashboard you will need to add both the _date_ and _time_ sensors. Using these sensors we can create additional helpers.
 
-![image](https://github.com/jm-cook/my-smart-home/assets/8317651/f040fe76-3e36-429e-af45-cceefc07382e)
+<img src="https://github.com/jm-cook/my-smart-home/assets/8317651/f040fe76-3e36-429e-af45-cceefc07382e" width=250>
 
 For the date and time card, create a new template helper with Device class "Date" in the helpers section of settings. The state template I used is:
 
