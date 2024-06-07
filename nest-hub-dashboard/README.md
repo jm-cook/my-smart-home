@@ -338,7 +338,7 @@ view_layout:
 
 ## Weather chip
 
-![image](https://github.com/jm-cook/my-smart-home/assets/8317651/e9d04da5-1ba3-451d-90cb-8cfd8c4da082)
+![image](https://github.com/jm-cook/my-smart-home/assets/8317651/497112ff-3d50-4f21-ad5d-ae859181771c)
 
 
 The remaining grid area can be used for an additional sensor, or as I have chosen, to add further information in the form of 
@@ -361,3 +361,8 @@ Casting to the nest hub is not covered in detail here, you should search for the
 casting your own dashboard to a nest hub, navigate to your cast device *Settings->Integrations->Google cast*. Then look for your device in the devices list.
 From there you can navigate to "browse media", and find your dashboard. Then click the "play" button.
 
+# Challenges and workarounds
+
+Note that when using the grid-layout, it is necessary to have this inside a panel dashboard - otherwise display on a nets hub will not work.
+This in turn causes another problem, some of the style  elements for the card display are no longer visible as they are "hidden" by the panel. The workaround for this is included in the 
+custom theme by using the entry ```card-mod-view-yaml``` to revert the ha-card style. However this workaround only works on the desktop, not on the cast device - so you are still stuck with the defaults for the panel view, ie square corners and no shadow. It's not bad at all, but hopefully could be fixed in future.
