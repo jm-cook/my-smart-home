@@ -1,0 +1,208 @@
+views:
+  - type: custom:grid-layout
+    layout:
+      grid-template-columns: 1fr 1fr 1fr
+      grid-template-rows: auto auto auto
+      grid-template-areas: |
+        "datetime  datetime  wellarea   "
+        " button1   button2   button3   "
+        "chip2area chip2area chip2area  "
+    title: Weather station
+    path: weather-station-new
+    theme: mush_panel
+    cards:
+      - type: custom:mushroom-template-card
+        primary: '{{ states(''sensor.current_date'') }}'
+        secondary: '{{ states(''sensor.time'') }}'
+        icon: ''
+        tap_action:
+          action: none
+        hold_action:
+          action: none
+        double_tap_action:
+          action: none
+        entity: sensor.time
+        fill_container: true
+        icon_color: ''
+        layout: vertical
+        card_mod:
+          style:
+            mushroom-card $: |
+              .container {
+                 --card-secondary-font-size: 12em;
+                 --card-secondary-line-height: 1em;
+                 --card-primary-line-height: 40px;
+                 --card-primary-font-size: 30px;
+                 --card-padding: 0px;
+                 --card-margin: 0px;
+              }
+        view_layout:
+          grid-area: datetime
+      - type: custom:mushroom-entity-card
+        entity: sensor.nes25_outdoor_temperature
+        layout: horizontal
+        name: Outdoor
+        secondary_info: state
+        fill_container: true
+        primary_info: name
+        view_layout:
+          grid-area: button2
+      - type: custom:mushroom-chips-card
+        chips:
+          - type: entity
+            entity: binary_sensor.am_i_away
+            tap_action:
+              action: call-service
+              service: input_boolean.toggle
+              target:
+                entity_id: input_boolean.home
+              data: {}
+            name: Away
+            content_info: state
+          - type: template
+            tap_action:
+              action: none
+            hold_action:
+              action: none
+            double_tap_action:
+              action: none
+            content: >-
+              {{ state_attr('climate.livingroom_thermostat', 'current_humidity'
+              )}}%
+            icon: mdi:water-percent
+            entity: climate.livingroom_thermostat
+          - type: weather
+            entity: weather.neshamn
+            show_conditions: true
+            show_temperature: true
+          - type: template
+            icon: mdi:wind-power
+            content: |-
+              {% if is_state('sensor.kitchen_fan_state', 'No trigger' ) -%}
+                Off
+              {%- else -%}
+                {{ states('sensor.kitchen_fan_state') }}
+              {%- endif %}
+            tap_action:
+              action: call-service
+              service: switch.turn_on
+              target:
+                entity_id: switch.kitchen_fan_boostmode
+              data: {}
+            hold_action:
+              action: none
+            double_tap_action:
+              action: none
+            entity: sensor.kitchen_fan_state
+          - type: entity
+            entity: sensor.water24_hrs
+            icon: mdi:water
+        alignment: center
+        view_layout:
+          grid-area: chip2area
+      - type: custom:mushroom-entity-card
+        entity: sensor.hot_tub_temperature
+        name: Bobby
+        layout: horizontal
+        icon: mdi:hot-tub
+        fill_container: true
+        primary_info: name
+        secondary_info: state
+        view_layout:
+          grid-area: button3
+      - type: custom:mushroom-template-card
+        primary: Livingroom ({{ states('sensor.livingroom_thermostat_setpoint') }} °C)
+        secondary: >-
+          {{ state_attr('climate.livingroom_thermostat', 'current_temperature'
+          )}} °C
+        icon: |
+          {% if (states('binary_sensor.neshamn_livingroom_state' ) == 'on') -%} 
+          mdi:radiator
+          {%- else -%} 
+          mdi:radiator-off
+          {%- endif %}
+        layout: horizontal
+        fill_container: true
+        icon_color: |-
+          {% if (states('binary_sensor.neshamn_livingroom_state' ) == 'on') -%} 
+            var(--rgb-state-climate-heat) 
+          {%- else -%} 
+            var(--rgb-state-climate-idle) 
+          {%- endif %}
+        entity: climate.livingroom_thermostat
+        tap_action:
+          action: more-info
+        view_layout:
+          grid-area: button1
+      - type: horizontal-stack
+        view_layout:
+          grid-area: wellarea
+        cards:
+          - type: custom:bar-card
+            positions:
+              indicator: inside
+              name: inside
+              icon: inside
+            entities:
+              - entity: sensor.water_volume
+            direction: up
+            severity:
+              - color: Red
+                from: 0
+                to: 289
+              - color: Orange
+                from: 289.1
+                to: 579
+              - color: Green
+                from: 579.1
+                to: 825
+            max: 825
+            target: 724
+            card_mod:
+              style: |-
+                ha-card {
+                  --bar-card-border-radius: 12px;
+                }
+                bar-card-name {
+                  margin: 0px;
+                  font-weight: bold;
+                  text-align: center;
+                  font-size: 0.9em;
+                }
+                bar-card-value {
+                  margin: 0px;
+                  font-weight: bold;
+                  text-align: center;
+                }
+          - type: custom:bar-card
+            positions:
+              indicator: inside
+              name: inside
+              icon: inside
+            entities:
+              - entity: sensor.groundwater_level
+            view_layout:
+              grid-area: gw
+            direction: up
+            max: 0
+            min: -60
+            target: 0
+            unit_of_measurement: m
+            card_mod:
+              style: |-
+                ha-card {
+                  --bar-card-border-radius: 12px;
+                }
+                bar-card-name {
+                  margin: 0px;
+                  font-weight: bold;
+                  text-align: center;
+                  font-size: 0.9em;
+                }
+                bar-card-value {
+                  margin: 0px;
+                  font-weight: bold;
+                  text-align: center;
+                }
+      - type: vertical-stack
+        cards: []
