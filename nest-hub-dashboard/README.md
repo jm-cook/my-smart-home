@@ -369,3 +369,10 @@ From there you can navigate to "browse media", and find your dashboard. Then cli
 Note that when using the grid-layout, it is necessary to have this inside a panel dashboard - otherwise display on a nest hub will not work.
 This in turn causes another problem, some of the style  elements for the card display are no longer visible as they are "hidden" by the panel. The workaround for this is included in the 
 custom theme by using the entry ```card-mod-view-yaml``` to revert the ha-card style. However this workaround only works on the desktop, not on the cast device - so you are still stuck with the defaults for the panel view, ie square corners and no shadow. It's not bad at all, but hopefully could be fixed in future.
+
+# 2024-08-17 updated to use sections view
+
+Documentation to be updated:
+
+![image](https://github.com/user-attachments/assets/03e2a059-cbce-4eeb-b9c9-15a9e2683c4e)
+
