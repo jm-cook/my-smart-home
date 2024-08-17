@@ -1,16 +1,19 @@
 mush_nest_panel:
     # HA variables  
-    card-mod-theme: mush_nest_panel
-    card-mod-view-yaml: |
-            hui-panel-view $: |
-              * {
-                --ha-card-border-radius: inherit !important;
-                --ha-card-border-width: inherit !important;
-                --ha-card-box-shadow: inherit !important;
-              }
+    #card-mod-theme: mush_nest_panel
+    # card-mod-view-yaml: |
+    #     hui-sidebar-view $: |
+    #       #sidebar {
+    #         max-width: 0px !important;
+    #         flex-grow: 0 !important;
+    #       }
+    #       #main {
+    #         flex-grow: 10 !important;
+    #       }
     ha-card-box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.16)
     ha-card-border-radius: 16px !important
-    masonry-view-card-margin: 4px 4px 4px 4px
+    ha-view-sections-column-gap: 8px
+    ha-view-sections-row-gap: var(--ha-view-sections-column-gap)
     # Mushroom layout
     # Default values are in comments. Uncomment to change.
     mush-spacing: 8px
@@ -30,12 +33,12 @@ mush_nest_panel:
     # mush-subtitle-letter-spacing: 0px
 
     # Card
-    mush-card-primary-font-size: 22px
-    mush-card-secondary-font-size: 50px
+    mush-card-primary-font-size: 130%
+    mush-card-secondary-font-size: 300%
     mush-card-primary-font-weight: 500
-    mush-card-secondary-font-weight: 550
-    mush-card-primary-line-height: 25px
-    mush-card-secondary-line-height: 52px
+    mush-card-secondary-font-weight: 900
+    mush-card-primary-line-height: 110%
+    mush-card-secondary-line-height: 110%
     mush-card-primary-color: grey
     # var(--primary-text-color)
     # mush-card-secondary-color: var(--primary-text-color)
@@ -49,7 +52,7 @@ mush_nest_panel:
     # mush-chip-padding: 0 0.25em
     # mush-chip-height: 50px
     mush-chip-border-radius: 25px
-    mush-chip-font-size: 22px
+    mush-chip-font-size: 0.5em
     mush-chip-font-weight: bold
     mush-chip-icon-size: 0.5em
     # mush-chip-avatar-padding: 0.1em
@@ -68,7 +71,7 @@ mush_nest_panel:
     # mush-badge-border-radius: 50%
     # # Icon
     # mush-icon-border-radius: 50%
-    # mush-icon-size: 40px
+    mush-icon-size: 30px
     # mush-icon-symbol-size: 0.6em
     # # Colors
     # mush-rgb-red: 244, 67, 54
@@ -89,11 +92,11 @@ mush_nest_panel:
     # mush-rgb-deep-orange: 255, 111, 0
     # mush-rgb-brown: 121, 85, 72
     # mush-rgb-light-grey: 189, 189, 189;
-    # mush-rgb-grey: 158, 158, 158
+    mush-rgb-grey: 158, 158, 158
     # mush-rgb-dark-grey: 96, 96, 96;
     # mush-rgb-blue-grey: 96, 125, 139
-    # mush-rgb-black: 0, 0, 0
-    # mush-rgb-white: 255, 255, 255
+    mush-rgb-black: 0, 0, 0
+    mush-rgb-white: 255, 255, 255
 
     # mush-rgb-info: var(--mush-rgb-blue)
     # mush-rgb-success: var(--mush-rgb-green)
@@ -127,8 +130,8 @@ mush_nest_panel:
     # mush-rgb-state-climate-off: var(--mush-rgb-disabled);
 
     # # You must keep this to support light/dark theme
-    # modes:
-    #     light:
-    #         mush-rgb-disabled: 189, 189, 189
-    #     dark:
-    #         mush-rgb-disabled: 111, 111, 111
+    modes:
+        light:
+            mush-rgb-disabled: 189, 189, 189
+        dark:
+            mush-rgb-disabled: 111, 111, 111
