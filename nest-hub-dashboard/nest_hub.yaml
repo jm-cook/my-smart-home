@@ -1,56 +1,46 @@
 views:
-  - type: panel
-    path: nest-dashboard
+  - type: sections
+    max_columns: 2
     theme: mush_nest_panel
-    title: Nest
-    cards:
-      - type: custom:layout-card
-        layout_type: custom:grid-layout
-        layout:
-          grid-template-columns: repeat(4, 1fr)
-          grid-template-rows: auto auto  auto
-          grid-template-areas: |
-            "timedate  timedate   weather  weather"   
-            "button1   button2    button3  fan" 
-            "button4   button5    button6  chips "
+    sections:
+      - type: grid
         cards:
-          - type: custom:mushroom-entity-card
-            entity: sensor.indoor_temperature
-            name: Livingroom
-            layout: vertical
-            view_layout:
-              grid-area: button1
-          - type: custom:mushroom-entity-card
-            entity: sensor.outdoor_temperature
-            name: Outdoor
-            layout: vertical
-            view_layout:
-              grid-area: button2
-          - type: custom:mushroom-entity-card
-            entity: sensor.outdoor_humidity
-            name: Outdoor Humidity
-            layout: vertical
-            view_layout:
-              grid-area: button3
-          - type: custom:mushroom-entity-card
-            name: Bedroom
-            layout: vertical
-            entity: sensor.bedroom_temperature
-            view_layout:
-              grid-area: button4
-          - type: custom:mushroom-entity-card
-            entity: sensor.indoor_co2
-            name: Carbon Dioxide
-            layout: vertical
-            view_layout:
-              grid-area: button5
-          - type: custom:mushroom-entity-card
-            entity: sensor.indoor_humidity
-            name: Indoor Humidity
-            layout: vertical
-            view_layout:
-              grid-area: button6
+          - type: picture-elements
+            image: https://fakeimg.pl/400x200/ffffff,0/000/?text=%20
+            elements:
+              - type: state-label
+                entity: sensor.time
+                style:
+                  left: 50%
+                  top: 60%
+                  font-size: 1100%
+                  font-weight: 550
+              - type: state-label
+                entity: sensor.current_date
+                style:
+                  left: 50%
+                  top: 20%
+                  font-size: 200%
+                  font-weight: 500
+                  color: grey
+            visibility:
+              - condition: screen
+                media_query: '(min-width: 768px)'
+            layout_options:
+              grid_columns: 4
+              grid_rows: 4
+      - type: grid
+        cards:
           - type: custom:chartjs-card
+            layout_options:
+              grid_columns: 4
+              grid_rows: 4
+            card_mod:
+              style: |
+                ha-card {
+                  height: 100%;
+                  box-shadow: var(--ha-card-box-shadow,none) !important;
+                }
             chart: line
             data:
               datasets:
@@ -110,62 +100,3 @@ views:
                   font:
                     size: 18
                   text: ${states['sensor.nowcast'].state;}
-            view_layout:
-              grid-area: weather
-          - type: custom:mushroom-template-card
-            primary: Ventilation - {{states('input_number.fan_temperature')}} °C
-            secondary: >
-              {{ state_attr('climate.flexit_nordic', 'preset_mode'
-              ).capitalize() }}
-            icon: mdi:fan
-            icon_color: >-
-              {% if (state_attr('climate.flexit_nordic', 'preset_mode' )  ==
-              'home') -%} 
-                var(--rgb-state-climate-heat-cool)
-              {%- elif (state_attr('climate.flexit_nordic', 'preset_mode' ) ==
-              'boost') -%} 
-                var(--rgb-state-climate-heat)
-              {%- else -%}
-                var(--rgb-state-climate-idle)
-              {%- endif %}
-            view_layout:
-              grid-area: fan
-            layout: vertical
-            entity: climate.flexit_nordic
-            tap_action:
-              action: more-info
-          - type: custom:mushroom-chips-card
-            chips:
-              - type: weather
-                entity: weather.forecast_home
-                show_conditions: true
-                show_temperature: true
-            view_layout:
-              grid-area: chips
-          - type: custom:mushroom-template-card
-            primary: '{{states(''sensor.current_date'')}}'
-            secondary: '{{states(''sensor.time'')}}'
-            icon: ''
-            tap_action:
-              action: none
-            hold_action:
-              action: none
-            double_tap_action:
-              action: none
-            entity: sensor.time
-            fill_container: true
-            card_mod:
-              style:
-                mushroom-card:
-                  mushroom-state-item:
-                    mushroom-state-info $: |
-                      .container {
-                         --card-secondary-font-size: 160px;
-                         --card-secondary-line-height: 175px;
-                         --card-primary-line-height: 40px;
-                         --card-primary-font-size: 30px;
-                         align-items: center;
-                      }
-            view_layout:
-              grid-area: timedate
-
