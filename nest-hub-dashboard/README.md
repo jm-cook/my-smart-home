@@ -6,7 +6,7 @@ The first image is a photo of the hub as it looks in the kitchen, the second is 
 
 <img src="https://github.com/jm-cook/my-smart-home/assets/8317651/efff7d99-0841-4fe9-87d8-17d49f783199" width="400">
 </br>
-<img src="https://github.com/jm-cook/my-smart-home/assets/8317651/6473d673-c0b1-4cdb-949d-c175d0c3828c" width="400">
+<img src="https://github.com/user-attachments/assets/03e2a059-cbce-4eeb-b9c9-15a9e2683c4e" width="400">
 
 
 Previously I have used the custom button-card for lovelace (https://github.com/custom-cards/button-card), but recently I experimented with the custom mushroom cards (https://github.com/piitaya/lovelace-mushroom) and liked the simple approach, requiring very little customization to achieve the look that I was after. 
@@ -36,29 +36,28 @@ your Home Assistant instance and paste some or all of this file into your own co
 
 The rest of this document describes how to achieve the layout and the individual sensor cards.
 
-## Grid view
-The dashboard uses the grid layout card. There was a problem displaying a grid layout directly on the nest hub so I first created a dashboard with a panel view, and then inserted a grid-layout card inside that. This then works and displays as you see in the images above.
+## Sections view
+The dashboard uses the ```sections``` view. Other views such as ```panel``` with a grid inside had issues where not all style settings would be honoured.
 
-The ```yaml``` code shown below is the first part of the configuration. You can see that first the grid-layout is defined for the view, the ```path```, and the ```title```. You will also see that a custom ```theme``` is defined. More on that in the next sectoin. Next, in the ```cards``` specification, a ```custom:layout-card``` is defined. This is our main container for the dashboard.
-The ```layout```specifies 4 columns each taking a quarter of the width. We use 4 columns for the individual sensor cards, and merge into 2 columns for the date, clock and weather displays.
+The ```yaml``` code shown below is the first part of the configuration (it's incomplete and just for illustration). You can see that first the sections type is defined for the view, the ```path```, and the ```title```. You will also see that a custom ```theme``` is defined. More on that in the next section. The specification then continues to define the various sections. If you use the UI to create your sections view then a configuration like this will be created for you.
 
 ```yaml
 views:
-  - type: panel
-    path: nest-dashboard
+  - type: sections
+    max_columns: 2
     theme: mush_nest_panel
+    cards: []
     title: Nest
-    cards:
-      - type: custom:layout-card
-        layout_type: custom:grid-layout
-        layout:
-          grid-template-columns: repeat(4, 1fr)
-          grid-template-rows: auto auto  auto
-          grid-template-areas: |
-            "timedate  timedate   weather  weather"   
-            "button1   button2    button3  fan" 
-            "button4   button5    button6  chips "
+    path: nest-dashboard
+    icon: mdi:home
+    sections:
+      - type: grid
+        cards:
 ```
+
+The screenshot below is the popup for creating the dashboard described here:
+
+![alt text](popup_create.png)
 
 ## Custom theme
 
@@ -72,23 +71,36 @@ theme, be sure to give them different names.
 In my tweaked theme I have changed the following to get the large font look that I was after:
 
 ```yaml
-    masonry-view-card-margin: 4px 4px 4px 4px
-
     # Card
-    mush-card-primary-font-size: 22px
-    mush-card-secondary-font-size: 50px
+    mush-card-primary-font-size: 130%
+    mush-card-secondary-font-size: 300%
     mush-card-primary-font-weight: 500
-    mush-card-secondary-font-weight: 550
-    mush-card-primary-line-height: 25px
-    mush-card-secondary-line-height: 52px
+    mush-card-secondary-font-weight: 900
+    mush-card-primary-line-height: 110%
+    mush-card-secondary-line-height: 110%
     mush-card-primary-color: grey
-
     mush-card-border-radius: 18px
-
+    # Chip
+    mush-chip-border-radius: 25px
+    mush-chip-font-size: 0.5em
+    mush-chip-font-weight: bold
+    mush-chip-icon-size: 0.5em
+    # Icon
+    mush-icon-size: 30px
 ```
-Some of the style elements for chips are also tweaked for readability on a room display.
+Some of the style elements for chips are also tweaked for readability on a room display, and the icon size was adjusted so that the mushroom card would fit nicely with a larger font in the new gridded sections view..
 
-Download [Custom theme](https://github.com/jm-cook/my-smart-home/blob/main/nest-hub-dashboard/mush_nest_panel_theme.yaml) for the full list of customizations.
+I also changed a couple of spacings for the sections view because I thought it looked slightly better on the small nest display. These settings also seemed to work well on a mobile phone.
+
+```yaml
+    ha-card-box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.16)
+    ha-card-border-radius: 16px !important
+    ha-view-sections-column-gap: 8px
+    ha-view-sections-row-gap: var(--ha-view-sections-column-gap)
+```
+
+Download my [custom theme](https://github.com/jm-cook/my-smart-home/blob/main/nest-hub-dashboard/mush_nest_panel_theme.yaml) for the full list of customizations that I have used.
+
 
 
 ## Date and time card
@@ -139,7 +151,37 @@ template:
           {{ weekday }} {{ month }} {{ day }}{{ suffix }}
 ```
 
-The Date card with time display is a mushroom template card displaying both the time and the date. You can create it in the editor for mushroom cards, but here is the full yaml configuration for my card:
+The Date card with time display is a built-in ``picture-elements`` card with a blank image. This might seem slightly strange, the reason for using this is because it has options to set the style directly, rather than going the ``card_mod`` route. This gives good control over the font sizes and works well on the nest display when casted. Note that I also added a media query so that the bog clock is not shown when viewing on a mobile phone.
+
+```yaml
+type: picture-elements
+image: https://fakeimg.pl/400x200/ffffff,0/000/?text=%20
+elements:
+  - type: state-label
+    entity: sensor.time
+    style:
+      left: 50%
+      top: 60%
+      font-size: 1100%
+      font-weight: 550
+  - type: state-label
+    entity: sensor.current_date
+    style:
+      left: 50%
+      top: 20%
+      font-size: 200%
+      font-weight: 500
+      color: grey
+visibility:
+  - condition: screen
+    media_query: '(min-width: 768px)'
+layout_options:
+  grid_columns: 4
+  grid_rows: 4
+```
+
+
+The example uses the ``picture-elements`` card but this will also work with a mushroom template card displaying both the time and the date but I had trouble with the ``card_mod`` settings not working well on a nest display. You can create it in the editor for mushroom cards, but here is the full yaml configuration for my card:
 
 ```yaml
           - type: custom:mushroom-template-card
@@ -292,13 +334,14 @@ Each of the sensor cards specifies a different entity. The vertical mushroom lay
 The first card looks like this, the rest are similar.
 
 ```yaml
-        cards:
-          - type: custom:mushroom-entity-card
-            entity: sensor.indoor_temperature
-            name: Livingroom
-            layout: vertical
-            view_layout:
-              grid-area: button1
+type: custom:mushroom-entity-card
+entity: sensor.indoor_temperature
+name: Livingroom
+fill_container: true
+layout_options:
+  grid_rows: 2
+  grid_columns: 2
+layout: vertical
 ```
 
 The detault tap action is used, so if you click on a sensor, it will show a graph of recent values.
@@ -360,19 +403,11 @@ view_layout:
 
 # Casting to the nest hub
 
-Casting to the nest hub is not covered in detail here, you should search for the blueprint solution elsewhere for a persistent solution. If you just want to try out
+Casting to the nest hub is not covered in detail here, you should search for the blueprint solution elsewhere for a persistent solution. I used the ``kind3r/cast-and-re-cast-a-lovelace-view-to-a-google-hub.yaml`` blueprint.
+If you just want to try out
 casting your own dashboard to a nest hub, navigate to your cast device *Settings->Integrations->Google cast*. Then look for your device in the devices list.
 From there you can navigate to "browse media", and find your dashboard. Then click the "play" button.
 
 # Challenges and workarounds
 
-Note that when using the grid-layout, it is necessary to have this inside a panel dashboard - otherwise display on a nest hub will not work.
-This in turn causes another problem, some of the style  elements for the card display are no longer visible as they are "hidden" by the panel. The workaround for this is included in the 
-custom theme by using the entry ```card-mod-view-yaml``` to revert the ha-card style. However this workaround only works on the desktop, not on the cast device - so you are still stuck with the defaults for the panel view, ie square corners and no shadow. It's not bad at all, but hopefully could be fixed in future.
-
-# 2024-08-17 updated to use sections view
-
-Documentation to be updated:
-
-![image](https://github.com/user-attachments/assets/03e2a059-cbce-4eeb-b9c9-15a9e2683c4e)
-
+Note that when using the grid-layout, it is necessary to have this inside a panel dashboard - otherwise display on a nest hub will not work. Some other workarounds are also needed and for this reason I have gone away from using the custom ``grid-layout`` and now use the built-in sections view.
