@@ -322,7 +322,7 @@ A simpler solution could also be used but I wanted to add some embellishments su
 
 ## Sensor cards
 
-![image](https://github.com/jm-cook/my-smart-home/assets/8317651/177b6979-cf25-4201-9174-bc3ee3caad04)
+![image](https://github.com/user-attachments/assets/1fea62af-b1ee-4d40-8e99-036796d6a8ba)
 
 
 The sensor cards are all pretty much the same and show 6 of the sensors, the ones that I am mainly interested in, temperature, humidity and CO2.
