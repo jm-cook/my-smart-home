@@ -184,35 +184,35 @@ layout_options:
 The example uses the ``picture-elements`` card but this will also work with a mushroom template card displaying both the time and the date but I had trouble with the ``card_mod`` settings not working well on a nest display. You can create it in the editor for mushroom cards, but here is the full yaml configuration for my card:
 
 ```yaml
-          - type: custom:mushroom-template-card
-            primary: '{{states(''sensor.current_date'')}}'
-            secondary: '{{states(''sensor.time'')}}'
-            icon: ''
-            tap_action:
-              action: none
-            hold_action:
-              action: none
-            double_tap_action:
-              action: none
-            entity: sensor.time
-            fill_container: true
-            card_mod:
-              style:
-                mushroom-card:
-                  mushroom-state-item:
-                    mushroom-state-info $: |
-                      .container {
-                         --card-secondary-font-size: 160px;
-                         --card-secondary-line-height: 175px;
-                         --card-primary-line-height: 40px;
-                         --card-primary-font-size: 30px;
-                         align-items: center;
-                      }
-            view_layout:
-              grid-area: timedate
+ type: custom:mushroom-template-card
+ primary: '{{states(''sensor.current_date'')}}'
+ secondary: '{{states(''sensor.time'')}}'
+ icon: ''
+ tap_action:
+   action: none
+ hold_action:
+   action: none
+ double_tap_action:
+   action: none
+ entity: sensor.time
+ fill_container: true
+ card_mod:
+   style:
+     mushroom-card:
+       mushroom-state-item:
+         mushroom-state-info $: |
+           .container {
+              --card-secondary-font-size: 160px;
+              --card-secondary-line-height: 175px;
+              --card-primary-line-height: 40px;
+              --card-primary-font-size: 30px;
+              align-items: center;
+           }
+ view_layout:
+   grid-area: timedate
 ```
 
-Here we have had to tweak the font sizes a little in order to get a nice readable display, so I used card_mod for that. Note this overrides the already adjusted font size in the custom theme. This seems to be a size that fits for most situations. As I said, I am not using this solution anymore as it doesn't always display with the correct font sized on a casted display-
+Here we have had to tweak the font sizes a little in order to get a nice readable display, so I used card_mod for that. Note this overrides the already adjusted font size in the custom theme. This seems to be a size that fits for most situations. As I said, I am not using this solution anymore as it doesn't always display with the correct font sized on a casted display but I left the configuration in here as some may find it useful.
 
 
 ## Nowcast (weather) card
