@@ -14,7 +14,7 @@ I was able to remove approximately 350 lines of tricky template configuration co
 where my button-cards were used and I am quite happy with the result.
 
 The dashboard uses primarily mushroom cards and the custom grid-layout from lovelace-layout-card (https://github.com/thomasloven/lovelace-layout-card).
-I made some minor custom adjustments using ```card_mod```, but was able to keep these to a minimum.
+I previously made some minor custom adjustments using ```card_mod```, but these have now been removed as they did not work reliably when casting.
 
 # Pre-requisite
 
@@ -151,7 +151,7 @@ template:
           {{ weekday }} {{ month }} {{ day }}{{ suffix }}
 ```
 
-The Date card with time display is a built-in ``picture-elements`` card with a blank image. This might seem slightly strange, the reason for using this is because it has options to set the style directly, rather than going the ``card_mod`` route. This gives good control over the font sizes and works well on the nest display when casted. Note that I also added a media query so that the bog clock is not shown when viewing on a mobile phone.
+The Date card with time display is a built-in ``picture-elements`` card with a blank image. This might seem slightly strange, the reason for using this is because it has options to set the style directly, rather than going the ``card_mod`` route. This gives good control over the font sizes and works well on the nest display when casted. Note that I also added a media query so that the big clock is not shown when viewing on a mobile phone.
 
 ```yaml
 type: picture-elements
@@ -212,7 +212,7 @@ The example uses the ``picture-elements`` card but this will also work with a mu
               grid-area: timedate
 ```
 
-Here we have had to tweak the font sizes a little in order to get a nice readable display, so I used card_mod for that. Note this overrides the already adjusted font size in the custom theme. This seems to be a size that fits for most situations.
+Here we have had to tweak the font sizes a little in order to get a nice readable display, so I used card_mod for that. Note this overrides the already adjusted font size in the custom theme. This seems to be a size that fits for most situations. As I said, I am not using this solution anymore as it doesn't always display with the correct font sized on a casted display-
 
 
 ## Nowcast (weather) card
