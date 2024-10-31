@@ -18,13 +18,9 @@ I previously made some minor custom adjustments using ```card_mod```, but these 
 
 # Pre-requisite
 
-To make a dashboard like mine you will need to install:
-
- - [Mushroom](https://github.com/piitaya/lovelace-mushroom)
- - [Lovelace-layout-card](https://github.com/thomasloven/lovelace-layout-card)
-
+To make a dashboard like mine you will need to install [Mushroom](https://github.com/piitaya/lovelace-mushroom).
    
-Follow the instructions for installing each package on your own installation.
+Follow the instructions for installing the package on your own installation.
 
 Additional downloads are required for the weather card described later on.
 
