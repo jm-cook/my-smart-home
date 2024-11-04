@@ -1,0 +1,1009 @@
+button_card_templates:
+  nest-panel-button:
+    layout: icon_name_state2nd
+    styles:
+      card:
+        - color: null
+      name:
+        - color: grey
+    color_type: icon
+  nest-panel-top-entity:
+    template:
+      - nest-panel-button
+    show_state: true
+    styles:
+      card:
+        - height: 70px
+        - font-size: 30px
+      name:
+        - font-size: 17px
+  nest-panel-bottom-entity:
+    layout: grid
+    template:
+      - nest-panel-button
+    show_state: true
+    styles:
+      grid:
+        - grid-template-areas: '"n n n" "s s s"  "i blank unit"'
+        - grid-template-columns: 1fr 2fr 1fr
+        - grid-template-rows: 1fr 2fr 1fr
+      icon:
+        - width: 1.5em
+        - height: 1.5em
+      card:
+        - height: 150px
+      name:
+        - font-size: 20px
+      state:
+        - font-size: 4em
+      custom_fields:
+        unit:
+          - font-size: 1.5em
+          - font-weight: 600
+    state_display: '[[[ return entity.state.toString() ]]]'
+    custom_fields:
+      unit: '[[[ return entity.attributes.unit_of_measurement ]]]'
+  nest-panel-temp-climate:
+    template:
+      - nest-panel-bottom-entity
+    variables:
+      hide: false
+      color: rgba(0,0,0,0.3)
+      device_name: Set at
+      alt_humidity_entity: null
+      alt_humidity_attr: null
+      color_setpoint_off: rgba(0,0,0,0.4)
+      color_setpoint_idle: rgba(144,238,144,0.6)
+      color_setpoint_cool: rgba(0,0,255,0.6)
+      color_setpoint_heat: rgba(255,0,0,0.6)
+      color_setpoint_wait: rgba(255,255,0,0.6)
+      icon_setpoint_off: mdi:thermometer-off
+      icon_setpoint_idle: null
+      icon_setpoint_cool: mdi:snowflake
+      icon_setpoint_heat: mdi:fire
+      icon_setpoint_wait: mdi:timer-sand
+      text_setpoint_off: white
+      text_setpoint_idle: black
+      text_setpoint_cool: white
+      text_setpoint_heat: white
+      text_setpoint_wait: black
+      icon_mode_disabled: false
+    show_icon: true
+    icon: mdi:fan
+    show_state: true
+    state_display: |-
+      [[[ 
+        var t = Math.round(entity.attributes.current_temperature * 10) /10;
+        return t.toString() 
+      ]]]
+    custom_fields:
+      humidity:
+        card:
+          type: custom:button-card
+          show_icon: true
+          icon: mdi:water-percent
+          show_name: false
+          show_state: true
+          state_display: |
+            [[[
+              if (entity.attributes.current_humidity) 
+                return entity.attributes.current_humidity;
+              var alt = variables.alt_humidity_entity && states[variables.alt_humidity_entity];
+              var attr = alt && alt.attributes[variables.alt_humidity_attr];
+              return attr;
+            ]]]
+          styles:
+            img_cell:
+              - display: flex
+            state:
+              - font-size: 0.8em
+            card:
+              - padding: 0
+              - padding-left: 2px
+              - background-color: rgba(0,0,0,0.2)
+              - display: contents;
+            icon:
+              - font-size: 1.0em
+              - width: 18pt
+              - margin-top: 0px
+              - margin-left: 0px
+              - margin-right: 0px
+      setpoint:
+        card:
+          type: custom:button-card
+          show_icon: true
+          show_name: true
+          show_state: true
+          state_display: |
+            [[[ 
+              return entity.attributes.temperature 
+                ? entity.attributes.temperature + "°" 
+                : entity.attributes.target_temp_low
+                  ? entity.attributes.target_temp_low + "°" 
+                  : ''
+            ]]]
+          name: |
+            [[[ 
+              return entity.attributes.target_temp_high
+                ? entity.attributes.target_temp_high + "°" 
+                : ''
+            ]]]
+          icon: |
+            [[[
+              switch(entity.attributes.hvac_action) {
+                case "cool":
+                case "cooling":
+                  return variables.icon_setpoint_cool;
+                case "heat":
+                case "heating":
+                  return variables.icon_setpoint_heat;
+                default:
+                  if (entity.attributes.hvac_mode == 3)
+                    return variables.icon_setpoint_wait;
+                  return entity.state != "off"
+                    ? variables.icon_setpoint_idle
+                    : entity.attributes.temperature
+                      ? ''
+                      : variables.icon_setpoint_off 
+              }
+            ]]]
+          styles:
+            icon:
+              - width: 18px
+              - color: |
+                  [[[ 
+                    switch(entity.attributes.hvac_action) {
+                      case "cool":
+                      case "cooling":
+                        return variables.text_setpoint_cool;
+                      case "heat":
+                      case "heating":
+                        return variables.text_setpoint_heat;
+                      default:
+                        if (entity.attributes.hvac_mode == 3)
+                          return variables.text_setpoint_wait;
+                        return entity.state == "off"
+                          ? variables.text_setpoint_off
+                          : variables.text_setpoint_idle 
+                    }
+                  ]]]
+            state:
+              - font-size: 0.8em
+              - color: |
+                  [[[ 
+                    switch(entity.attributes.hvac_action) {
+                      case "cool":
+                      case "cooling":
+                        return variables.text_setpoint_cool;
+                      case "heat":
+                      case "heating":
+                        return variables.text_setpoint_heat;
+                      default:
+                        if (entity.attributes.hvac_mode == 3)
+                          return variables.text_setpoint_wait;
+                        return entity.state == "off"
+                          ? variables.text_setpoint_off
+                          : variables.text_setpoint_idle 
+                    }
+                  ]]]
+            name:
+              - font-size: 0.8em
+              - color: |
+                  [[[ 
+                    switch(entity.attributes.hvac_action) {
+                      case "cool":
+                      case "cooling":
+                        return variables.text_setpoint_cool;
+                      case "heat":
+                      case "heating":
+                        return variables.text_setpoint_heat;
+                      default:
+                        if (entity.attributes.hvac_mode == 3)
+                          return variables.text_setpoint_wait;
+                        return entity.state == "off"
+                          ? variables.text_setpoint_off
+                          : variables.text_setpoint_idle 
+                    }
+                  ]]]
+            card:
+              - padding: 0 2px
+              - background-color: |
+                  [[[ 
+                    switch(entity.attributes.hvac_action) {
+                      case "cool":
+                      case "cooling":
+                        return variables.color_setpoint_cool;
+                      case "heat":
+                      case "heating":
+                        return variables.color_setpoint_heat;
+                      default:
+                        if (entity.attributes.hvac_mode == 3)
+                          return variables.color_setpoint_wait;
+                        return entity.state == "off"
+                          ? variables.color_setpoint_off
+                          : variables.color_setpoint_idle 
+                    }
+                  ]]]
+    state:
+      - id: value_any
+        operator: '!='
+        value: all
+        spin: true
+    styles:
+      grid:
+        - grid-template-areas: '"n n n" "s s s"  "humidity blank setpoint"'
+        - grid-template-columns: 1fr 2fr 1fr
+        - grid-template-rows: 1fr 2fr 1fr
+      img_cell:
+        - display: contents
+      icon:
+        - width: 70%
+        - position: absolute
+        - left: 3px
+        - color: silver
+        - display: >-
+            [[[ return entity.attributes.fan_state &&
+            entity.attributes.fan_state == 1 ? "block" : "none" ]]]
+      custom_fields:
+        humidity:
+          - display: |
+              [[[ 
+                return entity.attributes.current_humidity == undefined 
+                        && !variables.alt_humidity_entity
+                  ? "none" 
+                  : "contents" 
+              ]]]
+  nest_power_state:
+    template: nest-panel-button
+    variables:
+      colour_power_on: rgba(255,0,0,0.6)
+      colour_power_idle: rgba(144,238,144,0.6)
+    show_state: false
+    layout: vertical
+    color_type: icon
+    size: 80%
+    hold_action:
+      action: more-info
+    styles:
+      card:
+        - padding: 0.2em
+        - height: 70px
+      name:
+        - font-size: 0.8em
+        - white-space: normal
+      state:
+        - font-size: 0.65em
+        - white-space: normal
+        - padding: 0em
+      label:
+        - font-size: 0.4em
+        - white-space: normal
+  nest-container:
+    color_type: label-card
+    color: dimgray
+    styles:
+      card:
+        - padding: 0
+      name:
+        - border-radius: 0.4em 0.4em 0 0
+        - padding: 0.1em
+        - width: 100%
+        - font-weight: bold
+      grid:
+        - grid-template-areas: '"i" "n" "buttons"'
+        - grid-template-columns: 1fr
+        - grid-template-rows: 1fr min-content min-content
+      custom_fields:
+        buttons:
+          - background-color: rgba(0,0,0,0.3)
+          - margin: 0
+          - padding: 0.3em
+  clock-button:
+    entity: sensor.current_time
+    show_icon: false
+    show_label: false
+    show_name: false
+    show_state: true
+    styles:
+      state:
+        - font-size: 10em
+        - text-transform: uppercase
+      card:
+        - height: 11em
+  date-button:
+    entity: sensor.current_date
+    show_icon: false
+    show_label: false
+    show_name: false
+    show_state: true
+    styles:
+      state:
+        - font-size: 2em
+      card:
+        - height: 5em
+views:
+  - theme: Backend-selected
+    title: Mobile
+    path: mobile
+    badges: []
+    cards:
+      - type: vertical-stack
+        cards:
+          - type: horizontal-stack
+            cards:
+              - type: vertical-stack
+                cards:
+                  - type: custom:button-card
+                    entity: sensor.current_date
+                    show_icon: false
+                    show_label: false
+                    show_name: false
+                    show_state: true
+                    styles:
+                      state:
+                        - font-size: 2em
+                  - type: horizontal-stack
+                    cards:
+                      - type: custom:button-card
+                        entity: sensor.time
+                        show_icon: false
+                        show_label: false
+                        show_name: false
+                        show_state: true
+                        styles:
+                          state:
+                            - font-size: 8em
+                            - text-transform: uppercase
+                          card:
+                            - height: 11em
+                  - type: horizontal-stack
+                    cards:
+                      - type: custom:button-card
+                        template: nest-panel-temp-climate
+                        entity: climate.livingroom_thermostat
+                        name: Livingroom
+                        icon: mdi:thermometer
+                        styles:
+                          state:
+                            - font-size: 3em
+                      - type: custom:button-card
+                        template: nest-panel-bottom-entity
+                        entity: sensor.hot_tub_temperature
+                        name: Bobby
+                        icon: mdi:hot-tub
+                        styles:
+                          state:
+                            - font-size: 3em
+                      - type: custom:button-card
+                        template: nest-panel-bottom-entity
+                        entity: sensor.nes25_outdoor_temperature
+                        name: Outdoor
+                        icon: mdi:thermometer
+                        styles:
+                          state:
+                            - font-size: 3em
+                  - type: horizontal-stack
+                    cards:
+                      - type: custom:button-card
+                        template: nest-panel-temp-climate
+                        entity: climate.bathroom_thermostat
+                        name: Bathroom
+                        styles:
+                          state:
+                            - font-size: 3em
+                      - type: custom:button-card
+                        template: nest-panel-bottom-entity
+                        entity: sensor.nes25_indoor_co2
+                        name: Carbon Dioxide
+                        icon: mdi:molecule-co2
+                        styles:
+                          state:
+                            - font-size: 3em
+                          custom_fields:
+                            unit:
+                              - font-size: 1em
+                              - font-weight: 600
+                      - type: custom:button-card
+                        template: nest-panel-bottom-entity
+                        entity: sensor.nes25_outdoor_humidity
+                        name: Outdoor humidity
+                        styles:
+                          state:
+                            - font-size: 3em
+                  - type: custom:chartjs-card
+                    chart: line
+                    data:
+                      datasets:
+                        - backgroundColor: rgb(65,105,225)
+                          borderWidth: 10
+                          fill: true
+                          cubicInterpolationMode: monotone
+                          data: >-
+                            ${states['sensor.nowcast'].attributes.forecast.map(fcast
+                            => ({x: (new Date(fcast.datetime).getTime()-new
+                            Date().getTime()), y:
+                            parseFloat(fcast.precipitation)}))}
+                      blabels: ${30}
+                      labels: >-
+                        ${states['sensor.nowcast'].attributes.forecast.map(fcast
+                        => 5*Math.floor((new Date(fcast.datetime).getTime()-new
+                        Date().getTime())/(5000*60)))}
+                    entity_row: true
+                    custom_options:
+                      showLegend: false
+                    options:
+                      elements:
+                        point:
+                          radius: 0
+                      scales:
+                        x:
+                          max: 90
+                          min: 0
+                          display: true
+                          color: red
+                          ticks:
+                            callback: >-
+                              ${(function (val, index) {   var lval =
+                              parseInt(this.getLabelForValue(val));  if (lval ==
+                              0) { return 'Now';} else { return  lval % 30 ===
+                              0?lval:'';}   })}
+                            font:
+                              size: 18
+                        'y':
+                          beginAtZero: true
+                          display: true
+                          position: right
+                          grid:
+                            color: >-
+                              ${(function(context) {return context.tick.value%1
+                              ===0?'#aaaaaa':'#000000';})}
+                          ticks:
+                            callback: >-
+                              ${(function(val, index) { var lval =
+                              this.getLabelForValue(val); var ival =
+                              Math.round(lval); return lval % 1 === 0 ? ival :
+                              '';})}
+                            font:
+                              size: 18
+                          max: 3
+                      plugins:
+                        title:
+                          display: true
+                          font:
+                            size: 24
+                          text: ${states['sensor.nowcast'].state}
+                  - type: gauge
+                    entity: sensor.power_nesoyvegen_25
+                    min: 0
+                    max: 8000
+                    needle: true
+                    severity:
+                      green: 0
+                      yellow: 3000
+                      red: 5000
+                    name: Power
+                  - type: custom:button-card
+                    template: nest-container
+                    colory: '#EDE7B0'
+                    namey: Devices
+                    custom_fields:
+                      buttons:
+                        card:
+                          type: vertical-stack
+                          cards:
+                            - type: horizontal-stack
+                              cards:
+                                - type: custom:button-card
+                                  template: nest_power_state
+                                  entity: binary_sensor.neshamn_bathroom_state
+                                  name: Bathroom
+                                  icon: mdi:shower
+                                - type: custom:button-card
+                                  template: nest_power_state
+                                  entity: binary_sensor.neshamn_hall_state
+                                  name: Hall
+                                  icon: mdi:home-thermometer
+                                - type: custom:button-card
+                                  template: nest_power_state
+                                  entity: binary_sensor.neshamn_livingroom_state
+                                  name: Living room
+                                  icon: mdi:fire
+  - theme: Backend-selected
+    title: Home
+    type: panel
+    badges: []
+    cards:
+      - type: vertical-stack
+        cards:
+          - type: horizontal-stack
+            cards:
+              - type: custom:button-card
+                template: nest-panel-top-entity
+                entity: sensor.nes25_indoor_temperature
+                name: Livingroom
+                icon: mdi:thermometer
+              - type: custom:button-card
+                template: nest-panel-top-entity
+                entity: sensor.nes25_outdoor_temperature
+                name: Outdoor
+                icon: mdi:thermometer
+              - type: custom:button-card
+                template: nest-panel-top-entity
+                entity: sensor.hot_tub_temperature
+                name: Hot Tub
+                icon: mdi:thermometer
+              - type: custom:button-card
+                template: nest-panel-top-entity
+                entity: sensor.daily_energy_nes25
+                name: Today
+                state_display: >
+                  [[[ return Math.round(Number(entity.state)) + ' ' +
+                  entity.attributes.unit_of_measurement; ]]]
+                icon: mdi:lightning-bolt
+              - type: custom:button-card
+                template: nest-panel-top-entity
+                entity: sensor.daily_energy_nes25
+                name: Yesterday
+                state_display: >
+                  [[[ return Math.round(Number(entity.attributes.last_period)) +
+                  ' ' + entity.attributes.unit_of_measurement; ]]]
+                icon: mdi:lightning-bolt
+          - type: horizontal-stack
+            cards:
+              - type: vertical-stack
+                cards:
+                  - type: custom:button-card
+                    entity: sensor.current_time
+                    show_icon: false
+                    show_label: false
+                    show_name: false
+                    show_state: true
+                    styles:
+                      state:
+                        - font-size: 10em
+                        - text-transform: uppercase
+                      card:
+                        - height: 11em
+                  - type: weather-forecast
+                    entity: weather.neshamn
+              - type: vertical-stack
+                cards:
+                  - type: custom:button-card
+                    template: nest-container
+                    colory: '#EDE7B0'
+                    name: Devices
+                    custom_fields:
+                      buttons:
+                        card:
+                          type: vertical-stack
+                          cards:
+                            - type: horizontal-stack
+                              cards:
+                                - type: custom:button-card
+                                  template: nest_power_state
+                                  entity: binary_sensor.neshamn_bathroom_state
+                                  name: Bathroom
+                                  icon: mdi:shower
+                                - type: custom:button-card
+                                  template: nest_power_state
+                                  entity: binary_sensor.neshamn_hall_state
+                                  name: Hall
+                                  icon: mdi:home-thermometer
+                                - type: custom:button-card
+                                  template: nest_power_state
+                                  entity: binary_sensor.neshamn_livingroom_state
+                                  name: Living room
+                                  icon: mdi:fire
+                  - type: gauge
+                    entity: sensor.power_nesoyvegen_25
+                    min: 0
+                    max: 8000
+                    needle: true
+                    severity:
+                      green: 0
+                      yellow: 3000
+                      red: 5000
+                    name: Power
+  - theme: Backend-selected
+    type: panel
+    title: nest
+    path: nest
+    badges: []
+    cards:
+      - type: vertical-stack
+        cards:
+          - type: horizontal-stack
+            cards:
+              - type: vertical-stack
+                cards:
+                  - type: custom:button-card
+                    entity: sensor.current_date
+                    show_icon: false
+                    show_label: false
+                    show_name: false
+                    show_state: true
+                    styles:
+                      state:
+                        - font-size: 2em
+                  - type: custom:button-card
+                    entity: sensor.time
+                    show_icon: false
+                    show_label: false
+                    show_name: false
+                    show_state: true
+                    styles:
+                      state:
+                        - font-size: 10em
+                        - text-transform: uppercase
+                      card:
+                        - height: 11em
+                  - type: horizontal-stack
+                    cards:
+                      - type: custom:button-card
+                        template: nest-panel-temp-climate
+                        entity: climate.livingroom_thermostat
+                        name: Livingroom
+                        icon: mdi:thermometer
+                      - type: custom:button-card
+                        template: nest-panel-bottom-entity
+                        entity: sensor.hot_tub_temperature
+                        name: Bobby
+                        icon: mdi:hot-tub
+                      - type: custom:button-card
+                        template: nest-panel-bottom-entity
+                        entity: sensor.nes25_outdoor_temperature
+                        name: Outdoor
+                        icon: mdi:thermometer
+                  - type: horizontal-stack
+                    cards:
+                      - type: custom:button-card
+                        template: nest-panel-temp-climate
+                        entity: climate.bathroom_thermostat
+                        name: Bathroom
+                      - type: custom:button-card
+                        template: nest-panel-bottom-entity
+                        entity: sensor.nes25_indoor_co2
+                        name: Carbon Dioxide
+                        icon: mdi:molecule-co2
+                        styles:
+                          custom_fields:
+                            unit:
+                              - font-size: 1em
+                              - font-weight: 600
+                      - type: custom:button-card
+                        template: nest-panel-bottom-entity
+                        entity: sensor.nes25_outdoor_humidity
+                        name: Outdoor humidity
+              - type: vertical-stack
+                cards:
+                  - type: custom:chartjs-card
+                    chart: line
+                    data:
+                      datasets:
+                        - backgroundColor: rgb(65,105,225)
+                          borderWidth: 10
+                          fill: true
+                          cubicInterpolationMode: monotone
+                          data: >-
+                            ${states['sensor.nowcast'].attributes.forecast.map(fcast
+                            => ({x: (new Date(fcast.datetime).getTime()-new
+                            Date().getTime()), y:
+                            parseFloat(fcast.precipitation)}))}
+                      blabels: ${30}
+                      labels: >-
+                        ${states['sensor.nowcast'].attributes.forecast.map(fcast
+                        => 5*Math.floor((new Date(fcast.datetime).getTime()-new
+                        Date().getTime())/(5000*60)))}
+                    entity_row: true
+                    custom_options:
+                      showLegend: false
+                    options:
+                      elements:
+                        point:
+                          radius: 0
+                      scales:
+                        x:
+                          max: 90
+                          min: 0
+                          display: true
+                          color: red
+                          ticks:
+                            callback: >-
+                              ${(function (val, index) {   var lval =
+                              parseInt(this.getLabelForValue(val));  if (lval ==
+                              0) { return 'Now';} else { return  lval % 30 ===
+                              0?lval:'';}   })}
+                            font:
+                              size: 18
+                        'y':
+                          beginAtZero: true
+                          display: true
+                          position: right
+                          grid:
+                            color: >-
+                              ${(function(context) {return context.tick.value%1
+                              ===0?'#aaaaaa':'#000000';})}
+                          ticks:
+                            callback: >-
+                              ${(function(val, index) { var lval =
+                              this.getLabelForValue(val); var ival =
+                              Math.round(lval); return lval % 1 === 0 ? ival :
+                              '';})}
+                            font:
+                              size: 18
+                          max: 3
+                      plugins:
+                        title:
+                          display: true
+                          font:
+                            size: 24
+                          text: ${states['sensor.nowcast'].state}
+                  - type: gauge
+                    entity: sensor.power_nesoyvegen_25
+                    min: 0
+                    max: 8000
+                    needle: true
+                    severity:
+                      green: 0
+                      yellow: 3000
+                      red: 5000
+                    name: Power
+                  - type: custom:button-card
+                    template: nest-container
+                    colory: '#EDE7B0'
+                    namey: Devices
+                    custom_fields:
+                      buttons:
+                        card:
+                          type: vertical-stack
+                          cards:
+                            - type: horizontal-stack
+                              cards:
+                                - type: custom:button-card
+                                  template: nest_power_state
+                                  entity: binary_sensor.neshamn_bathroom_state
+                                  name: Bathroom
+                                  icon: mdi:shower
+                                - type: custom:button-card
+                                  template: nest_power_state
+                                  entity: binary_sensor.neshamn_hall_state
+                                  name: Hall
+                                  icon: mdi:home-thermometer
+                                - type: custom:button-card
+                                  template: nest_power_state
+                                  entity: binary_sensor.neshamn_livingroom_state
+                                  name: Living room
+                                  icon: mdi:fire
+  - theme: Backend-selected
+    title: PID graph
+    path: pid-graph
+    badges: []
+    cards:
+      - type: custom:apexcharts-card
+        graph_span: 6hr
+        yaxis:
+          - id: first
+            decimals: 0
+            min: 0
+            apex_config:
+              tickAmount: 4
+          - id: second
+            opposite: true
+            decimals: 0
+            min: 0
+            max: 800
+            apex_config:
+              tickAmount: 4
+        header:
+          show: true
+          title: Livingroom PID
+          show_states: true
+          colorize_states: true
+        series:
+          - entity: sensor.lvrm_1_current_power
+            curve: stepline
+            yaxis_id: second
+            type: area
+          - entity: sensor.lvrm_1_htr_temperature
+            curve: stepline
+            yaxis_id: first
+          - entity: sensor.lvrm_1_htr_setpoint
+            curve: stepline
+            yaxis_id: first
+          - entity: sensor.livingroom_thermostat_temperature_measurement
+            curve: stepline
+            yaxis_id: first
+      - type: custom:apexcharts-card
+        graph_span: 6hr
+        yaxis:
+          - id: first
+            decimals: 0
+            min: 0
+            apex_config:
+              tickAmount: 4
+          - id: second
+            opposite: true
+            decimals: 0
+            min: 0
+            max: 800
+            apex_config:
+              tickAmount: 4
+        header:
+          show: true
+          title: Livingroom PID
+          show_states: true
+          colorize_states: true
+        series:
+          - entity: sensor.lvrm_2_current_power_2
+            curve: stepline
+            yaxis_id: second
+            type: area
+          - entity: sensor.lvrm_2_htr_temperature
+            curve: stepline
+            yaxis_id: first
+          - entity: sensor.lvrm_2_htr_setpoint
+            curve: stepline
+            yaxis_id: first
+          - entity: sensor.livingroom_thermostat_temperature_measurement
+            curve: stepline
+            yaxis_id: first
+      - type: custom:apexcharts-card
+        graph_span: 6hr
+        yaxis:
+          - id: first
+            decimals: 0
+            min: 0
+            apex_config:
+              tickAmount: 4
+          - id: second
+            opposite: true
+            decimals: 0
+            min: 0
+            max: 400
+            apex_config:
+              tickAmount: 4
+        header:
+          show: true
+          title: Bedroom1 PID
+          show_states: true
+          colorize_states: true
+        series:
+          - entity: sensor.bdrm1_current_power
+            curve: stepline
+            yaxis_id: second
+            type: area
+          - entity: climate.bdrm1
+            attribute: current_temperature
+            curve: stepline
+            yaxis_id: first
+          - entity: climate.bdrm1
+            attribute: temperature
+            curve: stepline
+            yaxis_id: first
+      - type: custom:apexcharts-card
+        graph_span: 6hr
+        yaxis:
+          - id: first
+            decimals: 0
+            min: 0
+            apex_config:
+              tickAmount: 4
+          - id: second
+            opposite: true
+            decimals: 0
+            min: 0
+            max: 400
+            apex_config:
+              tickAmount: 4
+        header:
+          show: true
+          title: Bedroom2 PID
+          show_states: true
+          colorize_states: true
+        series:
+          - entity: sensor.bdrm2_current_power
+            curve: stepline
+            yaxis_id: second
+            type: area
+          - entity: climate.bdrm2
+            attribute: current_temperature
+            curve: stepline
+            yaxis_id: first
+          - entity: climate.bdrm2
+            attribute: temperature
+            curve: stepline
+            yaxis_id: first
+  - title: Water 2
+    path: water-2
+    type: sections
+    max_columns: 1
+    sections:
+      - type: grid
+        cards:
+          - chart_type: bar
+            period: month
+            type: statistics-graph
+            entities:
+              - sensor.water_meter
+            stat_types:
+              - change
+            days_to_show: 65
+          - chart_type: bar
+            period: month
+            type: statistics-graph
+            entities:
+              - sensor.water_filled
+            stat_types:
+              - change
+            days_to_show: 60
+  - title: water
+    path: water
+    cards:
+      - type: vertical-stack
+        cards:
+          - chart_type: bar
+            period: day
+            type: statistics-graph
+            entities:
+              - sensor.water_meter
+            stat_types:
+              - change
+            days_to_show: 2
+          - chart_type: bar
+            period: day
+            type: statistics-graph
+            entities:
+              - sensor.water_filled
+            stat_types:
+              - change
+            days_to_show: 2
+      - title: History
+        type: history-graph
+        hours_to_show: 105
+        entities:
+          - sensor.water_volume
+    type: custom:vertical-layout
+  - title: chart test
+    path: chart-test
+    cards:
+      - type: entity
+        entity: sensor.well_monitor_analog_input_2_voltage_measurement
+      - type: entity
+        entity: sensor.filtered_well_monitor_voltage_measurement
+      - type: entity
+        entity: input_number.filtered_well_monitor_voltage_measurement
+      - type: custom:config-template-card
+        variables:
+          CURRENT: states['weather.met_no_nowcast_hytten'].state
+        entities:
+          - ${vars[0]}
+        card:
+          type: custom:apexcharts-card
+          apex_config:
+            chart:
+              height: 170px
+          header:
+            show: true
+            floating: true
+            title: ${"Next 90 mins - " + CURRENT}
+            show_states: false
+            colorize_states: true
+          series:
+            - entity: weather.met_no_nowcast_hytten
+              type: area
+              stroke_width: 0
+              data_generator: |
+                const f = JSON.parse(entity.attributes.forecast_json)
+                return f.map(s=>[s.datetime,s.precipitation])
+          span:
+            start: minute
+          graph_span: 100min
+          yaxis:
+            - show: false
+              min: 0
+          layout: minimal
+      - type: entities
+        entities:
+          - entity: sensor.water_volume
+          - entity: sensor.water_meter
+        title: Well
