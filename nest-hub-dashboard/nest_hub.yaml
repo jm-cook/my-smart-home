@@ -2,6 +2,10 @@ views:
   - type: sections
     max_columns: 2
     theme: mush_nest_panel
+    cards: []
+    title: Nest
+    path: nest-dashboard
+    icon: mdi:home
     sections:
       - type: grid
         cards:
@@ -26,9 +30,8 @@ views:
             visibility:
               - condition: screen
                 media_query: '(min-width: 768px)'
-            layout_options:
-              grid_columns: 4
-              grid_rows: 4
+            grid_options:
+              columns: full
       - type: grid
         cards:
           - type: custom:chartjs-card
@@ -100,3 +103,122 @@ views:
                   font:
                     size: 18
                   text: ${states['sensor.nowcast'].state;}
+      - type: grid
+        cards:
+          - type: custom:mushroom-entity-card
+            entity: sensor.indoor_temperature
+            name: Livingroom
+            fill_container: true
+            layout_options:
+              grid_rows: 2
+              grid_columns: 2
+            layout: vertical
+          - type: custom:mushroom-entity-card
+            name: Bedroom
+            entity: sensor.bedroom_temperature
+            fill_container: true
+            layout_options:
+              grid_rows: 2
+              grid_columns: 2
+            layout: vertical
+          - type: custom:mushroom-entity-card
+            entity: sensor.outdoor_temperature
+            name: Outdoor
+            fill_container: true
+            layout_options:
+              grid_rows: 2
+              grid_columns: 2
+            layout: vertical
+          - type: vertical-stack
+            cards:
+              - type: custom:mushroom-template-card
+                icon: mdi:fan
+                entity: climate.flexit_nordic
+                tap_action:
+                  action: more-info
+                icon_color: >-
+                  {% if (state_attr('climate.flexit_nordic', 'preset_mode' )  ==
+                  'home') -%} 
+                    var(--rgb-state-climate-heat-cool)
+                  {%- elif (state_attr('climate.flexit_nordic', 'preset_mode' )
+                  == 'boost') -%} 
+                    var(--rgb-state-climate-heat)
+                  {%- else -%}
+                    var(--rgb-state-climate-idle)
+                  {%- endif %}
+                primary: >-
+                  Ventilation {{ (state_attr('climate.flexit_nordic',
+                  'temperature') | float ) }} °C
+                secondary: >-
+                  {{ state_attr('climate.flexit_nordic', 'preset_mode'
+                  ).capitalize() }}
+              - type: custom:mushroom-chips-card
+                alignment: center
+                chips:
+                  - type: template
+                    icon: mdi:fan-plus
+                    entity: input_boolean.air_control_auto
+                    content: 'Auto fan: {{ states(''input_boolean.air_control_auto'') }}'
+            layout_options:
+              grid_columns: 2
+              grid_rows: 2
+          - type: custom:mushroom-entity-card
+            entity: sensor.indoor_humidity
+            name: Indoor Humidity
+            fill_container: true
+            layout_options:
+              grid_rows: 2
+              grid_columns: 2
+            layout: vertical
+          - type: custom:mushroom-template-card
+            entity: sensor.indoor_co2
+            primary: Carbon Dioxide
+            secondary: '{{states(''sensor.indoor_co2'')}}'
+            icon: mdi:molecule-co2
+            fill_container: true
+            layout: vertical
+            icon_color: var(--rgb-state-entity)
+            tap_action:
+              action: more-info
+          - type: custom:mushroom-entity-card
+            entity: sensor.outdoor_humidity
+            name: Outdoor Humidity
+            fill_container: true
+            layout_options:
+              grid_rows: 2
+              grid_columns: 2
+            layout: vertical
+          - type: custom:mushroom-entity-card
+            fill_container: true
+            name: Finished in
+            secondary_info: state
+            entity: sensor.dishwasher_remaining
+            layout_options:
+              grid_columns: 2
+              grid_rows: 2
+            visibility:
+              - condition: state
+                entity: sensor.dishwasher_remaining_program_time
+                state_not: unavailable
+            layout: vertical
+          - type: gauge
+            entity: sensor.kaifa_active_power_import
+            min: 0
+            max: 9000
+            needle: true
+            segments:
+              - from: 0
+                color: var(--success-color)
+              - from: 3000
+                color: var(--warning-color)
+              - from: 6000
+                color: var(--error-color)
+            name: ' '
+            visibility:
+              - condition: state
+                entity: sensor.dishwasher_remaining_program_time
+                state: unavailable
+            layout_options:
+              grid_columns: 2
+              grid_rows: 2
+        column_span: 2
