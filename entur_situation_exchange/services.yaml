@@ -1,0 +1,22 @@
+# services.yaml
+entur_sx:
+  name:  EnTur situation exchange query
+  description: >
+    Queries and processes the EnTur SX api for deviations in services. The script bulds a 
+    dictionary of all deviations corresponting to the requested lines, which can be used for 
+    creating additional sensors.
+  fields:
+    operator:
+      description: >
+         The name (codespace) of the operator to request. 
+         This is useful if you only need to query a single operator as the amount of data transferred from the service will be reduced.
+         This parameter is optional, but recomended. A full list of operator codespace names is given here: https://developer.entur.org/pages-real-time-intro
+      example: SKY
+    lines_to_check:
+      description:   This is a list of lines to query for deviations. All requested lines will be included in the returned structure (python dict).
+      example: "[ SKY:Line:1, SKY:Line:3 ] "
+    include_future:
+      description: >
+         If set to true the query will return all situations, including those planned in the future.
+         The parameter is optional with the  default value set to  true
+      example: "false"
