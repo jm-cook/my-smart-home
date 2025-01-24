@@ -9,7 +9,7 @@ monitor the state of individual lines.
 
 For example:
 
-![image](https://github.com/user-attachments/assets/f6cb174e-95fa-4d52-82ea-b9178222ada0)
+![image](https://github.com/user-attachments/assets/c22c59bb-4486-41d9-8046-1c416ad800c4)
 
 ## Why?
 
@@ -34,7 +34,9 @@ To install the codes you must follow these steps:
    ![image](https://github.com/user-attachments/assets/7764ee9b-5999-4af0-906f-b9f9ed6c1cac)
 If you click on "Perform action" you should get a response that looks similar to this one:
 
-    ![image](https://github.com/user-attachments/assets/230a23a2-abb2-4fed-aeae-1d5b35e797ed)
+  ![image](https://github.com/user-attachments/assets/6ddd58fa-f449-4d5e-a737-aab660fd5032)
+
+
    The service returns a dict containing start (a datetime when the deviation started), summary, and description.
    
 5. Create sensors for each of the lines you are interested in. To do this you can create trigger based teplate sensors. For example (in ```configuration.yaml```):
@@ -63,15 +65,27 @@ template:
             valid_from:   "{{ lines_report.get('SKY:Line:1')[0].get('start')  }}"
             summary:      "{{ lines_report.get('SKY:Line:1')[0].get('summary')  }}"
             description:  "{{ lines_report.get('SKY:Line:1')[0].get('description')  }}"
-      - name: skyss_situation_line_20
-        unique_id: skyss_situation_line_20
+      - name: skyss_situation_line_3
+        unique_id: skyss_situation_line_3
         state: "{{ lines_report.get('SKY:Line:3')[0].get('summary')  }}"
         attributes:
             valid_from:   "{{ lines_report.get('SKY:Line:3')[0].get('start')  }}"
             summary:      "{{ lines_report.get('SKY:Line:3')[0].get('summary')  }}"
             description:  "{{ lines_report.get('SKY:Line:3')[0].get('description')  }}"
+      - name: skyss_situation_line_20
+        unique_id: skyss_situation_line_20
+        state: "{{ lines_report.get('SKY:Line:20')[0].get('summary')  }}"
+        attributes:
+            valid_from:   "{{ lines_report.get('SKY:Line:20')[0].get('start')  }}"
+            summary:      "{{ lines_report.get('SKY:Line:20')[0].get('summary')  }}"
+            description:  "{{ lines_report.get('SKY:Line:20')[0].get('description')  }}"
 ```
 
 In this template, the trigger fires at 15 seconds past every minute and calls the python script as a service. The ```lines_report```
 response variable contains a dict that is then used to update 2 sensors and their attributes. The dict will contain 
 all reports for the selected lines so in the template we take just the first (and most recent) one.
+
+The sensors can be viewed in the developer panel:
+
+![image](https://github.com/user-attachments/assets/6d3b8448-e552-4197-86b9-10be97fae1d0)
+
