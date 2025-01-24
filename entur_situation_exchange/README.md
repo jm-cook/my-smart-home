@@ -31,8 +31,9 @@ To install the codes you must follow these steps:
 3. Restart your home assistant core.
 4. Test that the script is working. Use the developer menu and select the actions tab. You should be able to see the script and try it out in the actions menu:
 
-   ![image](https://github.com/user-attachments/assets/7764ee9b-5999-4af0-906f-b9f9ed6c1cac)
-If you click on "Perform action" you should get a response that looks similar to this one:
+   ![image](https://github.com/user-attachments/assets/f065b2be-14b4-442c-9e9c-5581aa207588)
+
+ If you click on "Perform action" you should get a response that looks similar to this one:
 
   ![image](https://github.com/user-attachments/assets/6ddd58fa-f449-4d5e-a737-aab660fd5032)
 
