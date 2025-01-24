@@ -40,7 +40,7 @@ To install the codes you must follow these steps:
 
    The service returns a dict containing start (a datetime when the deviation started), summary, and description.
    
-5. Create sensors for each of the lines you are interested in. To do this you can create trigger based teplate sensors. For example (in ```configuration.yaml```):
+5. Create sensors for each of the lines you are interested in. To do this you can create trigger based template sensors. For example (in ```configuration.yaml```):
 
 
 ```yaml
