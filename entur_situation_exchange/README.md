@@ -11,9 +11,20 @@ For example:
 
 ![image](https://github.com/user-attachments/assets/f6cb174e-95fa-4d52-82ea-b9178222ada0)
 
+## Why?
+
+Why did I make this when the operator already provides this informatin in their app and on the web? I made this 
+because I live near to the public stop that I use most often and wanted a more immediate information channel. Most of the time all is well, but sometimes
+due to weather or some other outside influence, the whole line may stop and chaos ensues. It is great to 
+know before I go out of the house that all systems are functioning normally, and if not then take some
+avoiding action. I have the relevant sensors, like the ones described here, on my dashboard in the kitchen. They only show if there is
+a problem (by using conditional visibility), but better to be able to see what is going on there than to open up the web or an app. 
+I have also set up alerting in the HA companion app, something that 
+the local operator's app does not do.
+
 ## Installation
 
-To install the codes you must follwo these steps:
+To install the codes you must follow these steps:
 
 1. Add the ```python_script``` integration to your installation and create the folder ```python_scripts``` as described here: https://www.home-assistant.io/integrations/python_script/#writing-your-first-script-reading-input-and-logging-the-activity
 2. Download the files ```entur_sx.py``` and ```services.yaml```from this github folder and upload them to the ```python_scripts``` folder that you created in step 1 above. You can upload files using the File editor sidebar menu.
