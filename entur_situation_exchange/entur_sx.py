@@ -30,16 +30,39 @@ skyss_sx_url = "https://api.entur.io/realtime/v1/rest/sx"
 if operator:
   skyss_sx_url = skyss_sx_url + f"?datasetId={operator}"
 service_data ={"method": "GET", "headers": {"User-agent": "Home Assistant", "Content-type": "application/json"}}
-response = hass.services.call("rest_command", "skyss_sx", service_data, blocking=True, return_response=True)
-value_json =response.get('content')
 
+looping = True
+retry_count = 0
+while looping:
+    response = hass.services.call("rest_command", "skyss_sx", service_data, blocking=True, return_response=True)
+    status = response.get('status')
+    value_dict = response.get('content')
+    if isinstance(value_dict, str):
+        logger.warning(f"content is a string not a dict, retrying")
+        retry_count = retry_count + 1
+        if retry_count > 3:
+            looping = false
+        else:
+            time.sleep(15)
+    elif status != 200:
+        logger.warning(f"content not retrieved, retrying")
+        retry_count = retry_count + 1
+        if retry_count > 3:
+            looping = false
+        else:
+            time.sleep(15)
+    else:
+        if retry_count > 0:
+            logger.warning("success")
+        looping = False
+        
 # Default value
 normal = "Normal service"
 
 allitems_dict = {}
 for look_for in lines_to_check:
   items = []
-  for sed in value_json['Siri']['ServiceDelivery']['SituationExchangeDelivery']:
+  for sed in value_dict['Siri']['ServiceDelivery']['SituationExchangeDelivery']:
     situations = sed.get('Situations')
     for element in situations.get('PtSituationElement', []):
       progress = element['Progress']
@@ -58,7 +81,6 @@ for look_for in lines_to_check:
               if look_for == line_ref:
                 summary = element.get('Summary')[0]['value']
                 description = element.get('Description')[0]['value'] 
-                logger.info(f"time is {dt_util.as_timestamp(datetime.datetime.fromisoformat(start))}, element is {progress}, {start}, {line_ref}, {summary}")
                 items.append( {"start": start, "summary": summary, "description": description } )
     # Ensure most recent situation found  is first
     if len(items) >= 1:
