@@ -37,14 +37,14 @@ while trying:
         logger.warning(f"content: {value_dict[:200]} ")
         retry_count = retry_count + 1
         if retry_count > 3:
-            trying = false
+            trying = False
         else:
             time.sleep(15)
     elif status != 200:
         logger.warning(f"content not retrieved, retrying")
         retry_count = retry_count + 1
         if retry_count > 3:
-            trying = false
+            trying = False
         else:
             time.sleep(15)
     else:
