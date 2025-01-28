@@ -12,9 +12,6 @@
     :param include_future: If set to true the query will return all situations, including those planned in the future. The parameter is optional with the default value set to true
     :param lines_to_check: This is a list of lines to query for deviations. All requested lines will be included in the returned structure (python dict).
                      Line numbers are usually of the form OPR:Line:nnn where OPR is the operator codespace and nnn is the local line number.
-    :param operator: The name (codespace) of the operator to request. This is useful if you only need to query a single operator as the amount of data 
-                     transferred from the service will be reduced. This parameter is optional, but recomended. 
-                     A full list of operator codespace names is given here: https://developer.entur.org/pages-real-time-intro
     """
 # Utility to sort list of dictionaries by date
 def sortByTimestamp(item):
@@ -22,39 +19,38 @@ def sortByTimestamp(item):
 
 include_future = data.get("include_future", True)
 lines_to_check = data.get("lines_to_check", [])
-operator = data.get("operator", None)
 
-
-# rest command returns SIRI situation exchange data for the given URL
-skyss_sx_url = "https://api.entur.io/realtime/v1/rest/sx"
-if operator:
-  skyss_sx_url = skyss_sx_url + f"?datasetId={operator}"
-service_data ={"method": "GET", "headers": {"User-agent": "Home Assistant", "Content-type": "application/json"}}
-
-looping = True
+trying = True
 retry_count = 0
-while looping:
-    response = hass.services.call("rest_command", "skyss_sx", service_data, blocking=True, return_response=True)
-    status = response.get('status')
-    value_dict = response.get('content')
+while trying:
+    try:
+        response = hass.services.call("rest_command", "skyss_sx", {}, blocking=True, return_response=True)
+        status = response.get('status')
+        value_dict = response.get('content')
+    except Exception as e:
+        status = 999
+        logger.warn(f"error from rest_command \n{e}")
+        value_dict = "error"
+        
     if isinstance(value_dict, str):
-        logger.warning(f"content is a string not a dict, retrying")
+        logger.warning("content is a string not a dict, retrying")
+        logger.warning(f"content: {value_dict[:200]} ")
         retry_count = retry_count + 1
         if retry_count > 3:
-            looping = false
+            trying = false
         else:
             time.sleep(15)
     elif status != 200:
         logger.warning(f"content not retrieved, retrying")
         retry_count = retry_count + 1
         if retry_count > 3:
-            looping = false
+            trying = false
         else:
             time.sleep(15)
     else:
         if retry_count > 0:
             logger.warning("success")
-        looping = False
+        trying = False
         
 # Default value
 normal = "Normal service"
@@ -91,3 +87,5 @@ for look_for in lines_to_check:
     # This makes sure all reports for our requested line are returned in the output dict
     allitems_dict.update({look_for: items})
 output = allitems_dict
+
+
