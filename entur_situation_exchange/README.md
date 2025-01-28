@@ -67,6 +67,7 @@ template:
             lines_to_check:  
               - SKY:Line:1
               - SKY:Line:3
+              - SKY:Line:20
         response_variable: lines_report
     sensor:
       - name: skyss_situation_line_1
