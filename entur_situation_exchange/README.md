@@ -94,7 +94,7 @@ template:
 ```
 
 In this template, the trigger fires at 15 seconds past every minute and calls the python script as a service. The ```lines_report```
-response variable contains a dict that is then used to update 2 sensors and their attributes. The dict will contain 
+response variable contains a dict that is then used to update 3 sensors and their attributes. The dict will contain 
 all reports for the selected lines so in the template we take just the first (and most recent) one.
 
 The sensors can be viewed in the developer panel:
