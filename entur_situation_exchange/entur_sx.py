@@ -8,12 +8,12 @@
 #
 # 
 """
-
     :param include_future: If set to true the query will return all situations, including those planned in the future. The parameter is optional with the default value set to true
     :param lines_to_check: This is a list of lines to query for deviations. All requested lines will be included in the returned structure (python dict).
                      Line numbers are usually of the form OPR:Line:nnn where OPR is the operator codespace and nnn is the local line number.
     """
 # Utility to sort list of dictionaries by date
+# This ensures that the most recent situation is first in the list
 def sortByTimestamp(item):
   return item["start"]
 
@@ -22,6 +22,7 @@ lines_to_check = data.get("lines_to_check", [])
 
 trying = True
 retry_count = 0
+# Belt and braces checking for problems
 while trying:
     try:
         response = hass.services.call("rest_command", "skyss_sx", {}, blocking=True, return_response=True)
@@ -33,19 +34,18 @@ while trying:
         value_dict = "error"
         
     if isinstance(value_dict, str):
-        logger.warning("content is a string not a dict, retrying")
-        logger.warning(f"content: {value_dict[:200]} ")
-        retry_count = retry_count + 1
-        if retry_count > 3:
-            trying = False
+        if retry_count > 2:
+            raise Exception("skyss_sx: retry count exceeded")
         else:
+            logger.warning(f"content is a string not a dict, retrying. {value_dict[:20]}")
+            retry_count = retry_count + 1
             time.sleep(15)
     elif status != 200:
-        logger.warning(f"content not retrieved, retrying")
-        retry_count = retry_count + 1
-        if retry_count > 3:
-            trying = False
+        if retry_count > 2:
+            raise Exception("skyss_sx: retry count exceeded")
         else:
+            logger.warning(f"content not retrieved, retrying")
+            retry_count = retry_count + 1
             time.sleep(15)
     else:
         if retry_count > 0:
