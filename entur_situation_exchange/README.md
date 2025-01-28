@@ -41,7 +41,8 @@ rest_command:
 4. Restart your home assistant core.
 5. Test that the script is working. Use the developer menu and select the actions tab. You should be able to see the script and try it out in the actions menu:
 
-   ![image](https://github.com/user-attachments/assets/f065b2be-14b4-442c-9e9c-5581aa207588)
+  ![image](https://github.com/user-attachments/assets/2b158bbf-5cc5-4e18-a4c9-674748b0b2c4)
+
 
  If you click on "Perform action" you should get a response that looks similar to this one:
 
