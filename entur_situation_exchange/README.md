@@ -28,7 +28,7 @@ To install the codes you must follow these steps:
 
 1. Add the ```python_script``` integration to your installation and create the folder ```python_scripts``` as described here: https://www.home-assistant.io/integrations/python_script/#writing-your-first-script-reading-input-and-logging-the-activity
 2. Download the files ```entur_sx.py``` and ```services.yaml```from this github folder and upload them to the ```python_scripts``` folder that you created in step 1 above. You can upload files using the File editor sidebar menu.
-3. add the following resr comand defnition to configuration.yaml:
+3. add the following rest comand defnition to configuration.yaml:
 ```yaml
 rest_command:
     skyss_sx: 
