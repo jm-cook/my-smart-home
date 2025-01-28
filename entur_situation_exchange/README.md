@@ -38,8 +38,8 @@ rest_command:
             User-Agent: Home Assistant
         content_type: application/json
 ```
-5. Restart your home assistant core.
-6. Test that the script is working. Use the developer menu and select the actions tab. You should be able to see the script and try it out in the actions menu:
+4. Restart your home assistant core.
+5. Test that the script is working. Use the developer menu and select the actions tab. You should be able to see the script and try it out in the actions menu:
 
    ![image](https://github.com/user-attachments/assets/f065b2be-14b4-442c-9e9c-5581aa207588)
 
@@ -50,7 +50,7 @@ rest_command:
 
    The service returns a dict containing start (a datetime when the deviation started), summary, and description.
    
-5. Create sensors for each of the lines you are interested in. To do this you can create trigger based template sensors. For example (in ```configuration.yaml```):
+6. Create sensors for each of the lines you are interested in. To do this you can create trigger based template sensors. For example (in ```configuration.yaml```):
 
 
 ```yaml
