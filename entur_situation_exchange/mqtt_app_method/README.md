@@ -39,4 +39,15 @@ entursx:
 The things that you can change are: operator, lines_to_check, device, and include_future
 
 You might also change the log_level to DEBUG if needed.
-The thins
+
+Once the app.yaml and the python app are in place, the app should run automatically, so check the logs for appdaemon.
+
+The app will create the required sensors on your system (through MQTT discovery). You should find them
+under the MQTT integration page somilar to this:
+
+
+
+![image](https://github.com/user-attachments/assets/356eb486-38de-40bd-ab11-5d9eb3e1dea0)
+
+
+
