@@ -47,9 +47,11 @@ under the MQTT integration page similar to this:
 
 ![image](https://github.com/user-attachments/assets/356eb486-38de-40bd-ab11-5d9eb3e1dea0)
 
+
 Note that the app script specifies that MQTT topics should be retained. This is to ensure continuity between restarts
 of HA (otherwise the sensors become unavailable). This may mean that old line sensors are still available after you have 
 removed them from the configuration. There is currently no automatic purge to remove previous configurations.
+
 --------------------------------------------------------
 If you should use a configuration that created a line sensor that you no longer need, the sensor will continue to exist even if you remove it from the ```lines_to_check``` configuration. This is due to
 message retention in the mosquitto broker. The current method to remove unwanted line sensors is to access the mosquitto broker using MQTT Explorer (take a look here https://community.home-assistant.io/t/addon-mqtt-explorer-new-version/603739). If you connect MQTT Explorer to your broker, you can delete the unwanted topics there:
