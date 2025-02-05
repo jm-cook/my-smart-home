@@ -82,7 +82,7 @@ Once you have your deviation sensors working, you can display them in your dashb
 
 ![image](https://github.com/user-attachments/assets/27f9ddef-6c2a-4432-bdb1-5c0c280de0b7)
 
-In this example, the descriptoin is conditionally shown, epending on whether there is an on-going deviation or not.
+In this example, the description is conditionally shown, epending on whether there is an on-going deviation or not.
 
 YAML code for a sections view:
 ```yaml
@@ -123,7 +123,7 @@ views:
                 state_not: Normal service
 ```
 
-In additoin you might like to send a notification to the companion app on your phone. An example 
+In addition you might like to send a notification to the companion app on your phone. An example 
 automation to do this is shown below (you will need to define "COMPANION_APPS" yourself, check the documentation for notifications):
 
 ```yaml
