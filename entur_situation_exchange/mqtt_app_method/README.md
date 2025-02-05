@@ -6,8 +6,9 @@ information on deviations in services.
 
 The code in this folder accesses the situation-exchange and creates Home Assistant sensors monitoring the state of specified lines.
 
-This python app for appdaemon will create sensors for each of the lines that you select. 
-To use it you will use the Home Assistant addons appdaemon and mqtt. This method may initially seem 
+This standalone python app for appdaemon will create sensors for each of the lines that you select. 
+To use it you will use the Home Assistant addons appdaemon and mqtt and install the python app
+for appdaemon. This method may initially seem 
 complicated but installation *should* be straightforward and the solution gives the best results.
 
 ## Why?
