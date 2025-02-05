@@ -1,4 +1,4 @@
-# EnTur situation exchange query app for appdaemon
+# Home Assistant EnTur situation exchange query app for appdaemon
 
 This folder contains instructions and code for accessing the EnTur situation exchange data. EnTur is the Norwegian
 national travel planner and provides various APIs for travel planning, ticketing, vehicle tracking and 
