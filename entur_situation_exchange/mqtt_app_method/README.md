@@ -1,3 +1,5 @@
+Navigate to: [My smart home](../..)
+
 # Home Assistant EnTur situation exchange query app for appdaemon
 
 This folder contains instructions and code for accessing the EnTur situation exchange data. EnTur is the Norwegian
