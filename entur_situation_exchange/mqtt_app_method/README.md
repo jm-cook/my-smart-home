@@ -76,6 +76,10 @@ under the MQTT integration page similar to this:
 
 ![image](https://github.com/user-attachments/assets/356eb486-38de-40bd-ab11-5d9eb3e1dea0)
 
+The sensors will have a default icon when they are created, but the app creates a ```unique_id``` for each sensor so you can edit the sensor and and change the icon to a mdi icon of your own choice.
+
+![image](https://github.com/user-attachments/assets/0efaaf32-0b02-4702-9eec-f04c40e073d3)
+
 Note that the app script specifies that MQTT topics should be retained. This is to ensure continuity between restarts
 of HA (otherwise the sensors become unavailable). MQTT retention can be tricky, and if something goes wrong, or you want to remove a line/sensor, then 
 it will most likely be retained. This may mean that old line sensors are still available after you have 
