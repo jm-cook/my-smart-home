@@ -5,4 +5,4 @@ so that others may be able to use it.
 
 Goto:
 
-  - [EnTur deviation sensor](entur_situation_exchange/mqtt_app_method)
+  - [EnTur transport deviation sensor](entur_situation_exchange/mqtt_app_method)
