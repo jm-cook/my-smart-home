@@ -11,7 +11,7 @@ The code in this folder accesses the situation-exchange and creates Home Assista
 This standalone python app for appdaemon will create sensors for each of the lines that you select. 
 To use it you will use the Home Assistant addons appdaemon and mqtt and install the python app
 for appdaemon. This method may initially seem 
-complicated but installation *should* be straightforward and the solution gives the best results.
+complicated but installation *should* be straightforward and the solution gives the best results out of all the methods that I tried.
 
 ## Why?
 
