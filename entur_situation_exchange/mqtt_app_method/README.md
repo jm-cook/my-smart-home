@@ -43,7 +43,7 @@ To install the codes you must follow these steps:
    [![Open your Home Assistant instance and show the add-on store.](https://my.home-assistant.io/badges/supervisor_store.svg)](https://my.home-assistant.io/redirect/supervisor_store/)
 
 -----------------------------
-The script "entur_sx.py" is an app for appdaemon that fetches the entur SX data and creates appropriate sensors on your system through autodiscovery of MQTT
+The script "entur_sx.py" is an app for appdaemon that fetches the entur SX data and creates appropriate sensors on your system through Home Assistant  autodiscovery of MQTT.
 Copy the script to your appdaemon app folder. It will probably be in something like: ```/addon_configs/a0d7b954_appdaemon/apps```, you will need 
 to upload the file yourself, or copy/paste using an editor
 
