@@ -15,7 +15,7 @@ complicated but installation *should* be straightforward and the solution gives 
 
 ## Why?
 
-Why did I make this when the operator already provides this informatin in their app and on the web? I made this 
+Why did I make this when the operator already provides this information in their app and on the web? I made this 
 because I live near to the public stop that I use most often and wanted a more immediate information channel. Most of the time all is well, but sometimes
 due to weather or some other outside influence, the whole line may stop and chaos ensues. It is great to 
 know before I go out of the house that all systems are functioning normally, and if not then take some
