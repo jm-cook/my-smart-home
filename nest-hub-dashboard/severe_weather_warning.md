@@ -1,3 +1,5 @@
+# configuration.yaml
+
 ```yaml
 sensor:
   - platform: met_alerts
@@ -5,6 +7,8 @@ sensor:
     latitude: 59.951071
     longitude: 10.673786
 ```
+
+# Macro for alert view
 
 ```jinja2
 {%- macro met_alerts_view(snsr) -%}
@@ -40,9 +44,19 @@ sensor:
 {%- endmacro -%}
 ```
 
-```jinja2
-{% from 'met_alerts_view.jinja' import met_alerts_view %}
-{{ met_alerts_view('sensor.met_alerts_oslo') }}
+# Card example
+
+```yaml
+type: markdown
+content: |
+  {% from 'met_alerts_view.jinja' import met_alerts_view %}
+  {{ met_alerts_view('sensor.met_alerts_oslo') }}
+visibility:
+  - condition: state
+    entity: sensor.met_alerts_oslo
+    state_not: No Alert
 ```
+
+## resulting view
 
 ![image](oslo_alert_example.png)
