@@ -1,3 +1,11 @@
+```yaml
+sensor:
+  - platform: met_alerts
+    name: MET Alerts Oslo
+    latitude: 59.951071
+    longitude: 10.673786
+```
+
 ```jinja2
 {%- macro met_alerts_view(snsr) -%}
 {%- set weekdays = ['Søndag', 'Mandag', 'Tirsdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lørdag'] %} 
